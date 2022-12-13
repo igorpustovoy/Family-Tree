@@ -1,6 +1,6 @@
-import { ref } from "vue";
+import { reactive } from "vue";
 
-export const registerFormModel = ref({
+export const registerFormModel = reactive({
   username: "",
   email: "",
   password: "",
@@ -29,7 +29,7 @@ export const registerFormRules = {
   confirmPassword: [
     (v: string) => !!v || "Password confirmation is required",
     (v: string) =>
-      v === registerFormModel.value.password ||
+      v === registerFormModel.password ||
       "Password confirmation must match password",
   ],
 };

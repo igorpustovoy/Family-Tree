@@ -1,6 +1,6 @@
-import { ref } from "vue";
+import { reactive } from "vue";
 
-export const loginFormModel = ref({
+export const loginFormModel = reactive({
   email: "",
   password: "",
 });

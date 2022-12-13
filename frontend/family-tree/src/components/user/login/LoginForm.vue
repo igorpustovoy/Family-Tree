@@ -1,18 +1,35 @@
 <script setup lang="ts">
+import axios from "@/api/axios";
 import { ref } from "vue";
 import { loginFormModel, loginFormRules } from "./login-validation";
 
 const isFormValid = ref(false);
 
+const isSubmitting = ref(false);
+
 const formModel = loginFormModel;
 
 const formRules = loginFormRules;
+
+const handleLogin = async () => {
+  isSubmitting.value = true;
+  if (isFormValid.value) {
+    const loggedInUser = await axios.post("/users/login", formModel);
+    console.log(loggedInUser);
+  }
+  isSubmitting.value = false;
+};
 </script>
 
 <template>
   <h2>Login</h2>
   <v-divider></v-divider>
-  <v-form class="login-form" v-model="isFormValid">
+  <v-form
+    v-on:submit.prevent="handleLogin()"
+    class="login-form"
+    v-model="isFormValid"
+    :readonly="isSubmitting"
+  >
     <v-text-field
       density="comfortable"
       v-model="formModel.email"
@@ -29,7 +46,7 @@ const formRules = loginFormRules;
       required
     ></v-text-field>
 
-    <v-btn> Login </v-btn>
+    <v-btn :disabled="!isFormValid" type="submit"> Login </v-btn>
   </v-form>
 </template>
 
