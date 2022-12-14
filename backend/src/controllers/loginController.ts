@@ -1,38 +1,29 @@
-import { Request, Response } from "express";
-import bcrypt from "bcryptjs";
-import User from "../models/User";
-import getErrorMessage from "../helpers/getErrorMessage";
+import passport from "passport";
+import { NextFunction, Request, Response } from "express";
 require("dotenv").config();
 
 const loginController = {
-  handleLogin: async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-
-    try {
-      const user = await User.findOne({ email }).lean();
-
+  handleLogin: (req: Request, res: Response, next: NextFunction) =>
+    passport.authenticate("local", (_err, user: any) => {
       if (!user) {
-        return res.status(401).json({ error: { userFound: false } });
+        return res.status(400).send({ message: "Invalid credentials" });
       }
-
-      if (await bcrypt.compare(password, user.password)) {
-        await User.findOneAndUpdate({ email }, user);
-
-        return res.json({
-          userInfo: {
-            id: user._id,
-            username: user.username,
-            email: user.email,
-          },
-        });
-      }
-
-      return res.status(401).json({ error: { userFound: false } });
-    } catch (error) {
-      console.log(getErrorMessage(error));
-      res.status(500).json({ error: getErrorMessage(error) });
-    }
-  },
+      req.logIn(
+        user,
+        {
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+          httpOnly: true,
+        },
+        (err) => {
+          if (err) {
+            return res.status(401).json({ message: "Problem with logging in" });
+          }
+          return res
+            .status(200)
+            .json({ username: user.username, email: user.email });
+        }
+      );
+    })(req, res, next),
 };
 
 export default loginController;

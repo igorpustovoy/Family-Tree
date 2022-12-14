@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import UserModal from "@/components/user/UserModal.vue";
+import axios from "@/api/axios";
+const handleLogout = async () => {
+  const res = await axios.get("/users/logout");
+  console.log(res);
+};
 </script>
 
 <template>
@@ -16,6 +21,7 @@ import UserModal from "@/components/user/UserModal.vue";
     <div class="navbar__links">
       <RouterLink to="/">Home</RouterLink>
       <UserModal />
+      <v-btn @click="handleLogout()">Logout</v-btn>
     </div>
   </div>
 </template>

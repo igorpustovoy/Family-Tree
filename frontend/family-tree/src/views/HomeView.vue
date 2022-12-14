@@ -1,5 +1,16 @@
 <!-- eslint-disable prettier/prettier -->
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import axios from "@/api/axios";
+
+const testAuth = async () => {
+  const res = await axios.get("/users/test", {
+    withCredentials: true,
+    headers: { "Content-Type": "application/json" },
+  });
+
+  console.log(res);
+};
+</script>
 
 <template>
   <main>
@@ -7,6 +18,7 @@
     corrupti vitae repellat dolores, eius nulla ut blanditiis quibusdam ipsam
     consequatur quae. Expedita dolore voluptatem similique porro minima
     sapiente, corrupti cumque.
+    <v-btn @click="testAuth()">TEST AUTH</v-btn>
   </main>
 </template>
 
