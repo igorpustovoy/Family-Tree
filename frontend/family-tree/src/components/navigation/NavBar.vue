@@ -29,6 +29,7 @@ const handleLogout = async () => {
     </div>
     <div class="navbar__links">
       <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/tree">Tree</RouterLink>
       <UserModal v-if="!auth.isAuthenticated" />
       <v-btn v-if="auth.isAuthenticated" color="red" @click="handleLogout()"
         >Logout</v-btn
