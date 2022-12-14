@@ -16,6 +16,7 @@ const userSchema = new Schema<IUser>(
     },
     email: {
       required: true,
+      unique: true,
       type: String,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,

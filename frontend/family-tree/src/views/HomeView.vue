@@ -1,6 +1,7 @@
 <!-- eslint-disable prettier/prettier -->
 <script setup lang="ts">
 import axios from "@/api/axios";
+import useAuthStore from "@/stores/AuthStore";
 
 const testAuth = async () => {
   const res = await axios.get("/users/test", {
@@ -10,15 +11,16 @@ const testAuth = async () => {
 
   console.log(res);
 };
+
+const auth = useAuthStore();
 </script>
 
 <template>
   <main>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae,
-    corrupti vitae repellat dolores, eius nulla ut blanditiis quibusdam ipsam
-    consequatur quae. Expedita dolore voluptatem similique porro minima
-    sapiente, corrupti cumque.
-    <v-btn @click="testAuth()">TEST AUTH</v-btn>
+    <v-btn color="red" @click="testAuth()">TEST AUTH</v-btn>
+    <h2 v-if="auth.isAuthenticated">
+      Welcome {{ auth.username }} {{ auth.email }}
+    </h2>
   </main>
 </template>
 

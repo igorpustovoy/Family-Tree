@@ -17,11 +17,8 @@ const registerController = {
       });
 
       return res.json({
-        userInfo: {
-          id: user._id,
-          username: user.username,
-          email: user.email,
-        },
+        username: user.username,
+        email: user.email,
       });
     } catch (error: any) {
       if (error.code === 11000) {

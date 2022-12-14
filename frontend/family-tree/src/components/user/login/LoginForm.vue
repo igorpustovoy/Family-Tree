@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import axios from "@/api/axios";
+import useAuthStore from "@/stores/AuthStore";
 import { ref } from "vue";
 import { loginFormModel, loginFormRules } from "./login-validation";
+import type IAuth from "@/models/IAuth";
+
+const auth = useAuthStore();
 
 const isFormValid = ref(false);
 
@@ -14,8 +18,13 @@ const formRules = loginFormRules;
 const handleLogin = async () => {
   isSubmitting.value = true;
   if (isFormValid.value) {
-    const loggedInUser = await axios.post("/users/login", formModel);
-    console.log(loggedInUser);
+    try {
+      const response = await axios.post<IAuth>("/users/login", formModel);
+
+      auth.setAuth(response.data.username, response.data.email);
+    } catch (error) {
+      console.error(error);
+    }
   }
   isSubmitting.value = false;
 };

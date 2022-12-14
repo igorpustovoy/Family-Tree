@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import UserModal from "@/components/user/UserModal.vue";
 import axios from "@/api/axios";
+import useAuthStore from "@/stores/AuthStore";
+
+const auth = useAuthStore();
+
 const handleLogout = async () => {
-  const res = await axios.get("/users/logout");
-  console.log(res);
+  try {
+    await axios.get("/users/logout");
+
+    auth.clearAuth();
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>
 
@@ -20,8 +29,10 @@ const handleLogout = async () => {
     </div>
     <div class="navbar__links">
       <RouterLink to="/">Home</RouterLink>
-      <UserModal />
-      <v-btn @click="handleLogout()">Logout</v-btn>
+      <UserModal v-if="!auth.isAuthenticated" />
+      <v-btn v-if="auth.isAuthenticated" color="red" @click="handleLogout()"
+        >Logout</v-btn
+      >
     </div>
   </div>
 </template>

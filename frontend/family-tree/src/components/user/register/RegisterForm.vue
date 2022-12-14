@@ -2,6 +2,10 @@
 import { ref } from "vue";
 import { registerFormModel, registerFormRules } from "./register-validation";
 import axios from "@/api/axios";
+import type IAuth from "@/models/IAuth";
+import useAuthStore from "@/stores/AuthStore";
+
+const auth = useAuthStore();
 
 const isFormValid = ref(false);
 
@@ -15,8 +19,14 @@ const handleRegister = async () => {
   isSubmitting.value = true;
   if (isFormValid.value) {
     try {
-      const registeredUser = await axios.post("/users/register", formModel);
-      console.log(registeredUser);
+      const response = await axios.post<IAuth>("/users/register", formModel);
+
+      const user = await axios.post<IAuth>("/users/login", {
+        email: response.data.email,
+        password: formModel.password,
+      });
+
+      auth.setAuth(user.data.username, user.data.email);
     } catch (error) {
       console.error(error);
     }
