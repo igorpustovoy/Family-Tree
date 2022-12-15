@@ -1,3 +1,5 @@
+import axios from "@/api/axios";
+import type IAuth from "@/models/IAuth";
 import { defineStore } from "pinia";
 
 const useAuthStore = defineStore("auth", {
@@ -15,6 +17,16 @@ const useAuthStore = defineStore("auth", {
     clearAuth() {
       this.username = "";
       this.email = "";
+    },
+
+    async authenticate() {
+      try {
+        const response = await axios.get<IAuth>("/users/authenticate");
+
+        this.setAuth(response.data.username, response.data.email);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 

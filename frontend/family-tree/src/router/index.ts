@@ -29,7 +29,7 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to: any) => {
+router.beforeEach((to: RouteLocationNormalized) => {
   const auth = useAuthStore();
   if (to.meta.requiresAuth && !auth.isAuthenticated)
     return {
