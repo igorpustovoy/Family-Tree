@@ -7,6 +7,7 @@ import corsOptions from "./config/corsOptions";
 import { Server } from "socket.io";
 import https from "https";
 import users from "./routes/users";
+import globalChat from "./routes/global-chat";
 import initializePassport from "./config/passportConfig";
 import passport from "passport";
 import session from "express-session";
@@ -38,6 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/users", users);
+app.use("/global-chat", globalChat);
 
 const server = https.createServer(
   {

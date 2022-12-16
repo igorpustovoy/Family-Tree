@@ -1,10 +1,9 @@
-import passport from "passport";
 import { Router } from "express";
-import loginController from "../controllers/loginController";
-import registerController from "../controllers/registerController";
+import loginController from "../controllers/users/loginController";
+import registerController from "../controllers/users/registerController";
 import checkAuthenticated from "../middleware/checkAuthenticated";
-import logoutController from "../controllers/logoutController";
-import authenticateController from "../controllers/authenticateController";
+import logoutController from "../controllers/users/logoutController";
+import authenticateController from "../controllers/users/authenticateController";
 
 const router = Router();
 

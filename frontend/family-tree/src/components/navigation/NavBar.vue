@@ -40,6 +40,7 @@ const handleLogout = async () => {
       >
     </div>
   </div>
+  <v-divider color="light" />
 </template>
 
 <style scoped lang="scss">
@@ -52,7 +53,7 @@ const handleLogout = async () => {
   align-items: center;
   height: 5rem;
   width: 100%;
-  background-color: #fff;
+  background-color: black;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   img {
     margin-left: 2rem;
@@ -63,7 +64,6 @@ const handleLogout = async () => {
     align-items: center;
     a {
       margin-right: 1rem;
-      color: #000;
       text-decoration: none;
       &:hover {
         text-decoration: underline;
