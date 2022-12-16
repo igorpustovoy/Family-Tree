@@ -6,6 +6,7 @@ const useAuthStore = defineStore("auth", {
   state: () => ({
     username: "",
     email: "",
+    hasRequestedAuth: false,
   }),
 
   actions: {
@@ -26,6 +27,8 @@ const useAuthStore = defineStore("auth", {
         this.setAuth(response.data.username, response.data.email);
       } catch (error) {
         console.log(error);
+      } finally {
+        this.hasRequestedAuth = true;
       }
     },
   },

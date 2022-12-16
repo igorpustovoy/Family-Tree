@@ -1,4 +1,5 @@
 import useAuthStore from "@/stores/AuthStore";
+import AboutView from "@/views/AboutView.vue";
 import TreeView from "@/views/TreeView.vue";
 import {
   createRouter,
@@ -19,6 +20,14 @@ const router = createRouter({
       },
     },
     {
+      path: "/about",
+      name: "about",
+      component: AboutView,
+      meta: {
+        requiresAuth: false,
+      },
+    },
+    {
       path: "/tree",
       name: "tree",
       component: TreeView,
@@ -29,8 +38,13 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to: RouteLocationNormalized) => {
+router.beforeEach(async (to: RouteLocationNormalized) => {
   const auth = useAuthStore();
+
+  if (!auth.isAuthenticated) {
+    await auth.authenticate();
+  }
+
   if (to.meta.requiresAuth && !auth.isAuthenticated)
     return {
       name: "",

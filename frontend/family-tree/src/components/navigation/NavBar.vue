@@ -2,8 +2,10 @@
 import UserModal from "@/components/user/UserModal.vue";
 import axios from "@/api/axios";
 import useAuthStore from "@/stores/AuthStore";
+import useDrawerStore from "@/stores/DrawerStore";
 
 const auth = useAuthStore();
+const drawer = useDrawerStore();
 
 const handleLogout = async () => {
   try {
@@ -19,6 +21,7 @@ const handleLogout = async () => {
 <template>
   <div class="navbar">
     <div class="navbar__logo">
+      <v-icon @click="drawer.toggleDrawer()" size="x-large">mdi-menu</v-icon>
       <img
         alt="Vue logo"
         class="logo"
@@ -30,6 +33,7 @@ const handleLogout = async () => {
     <div class="navbar__links">
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/tree">Tree</RouterLink>
+      <RouterLink to="/about">About</RouterLink>
       <UserModal v-if="!auth.isAuthenticated" />
       <v-btn v-if="auth.isAuthenticated" color="red" @click="handleLogout()"
         >Logout</v-btn
