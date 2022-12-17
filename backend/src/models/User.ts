@@ -4,6 +4,7 @@ export interface IUser {
   username: string;
   email: string;
   password: string;
+  conversations: string[];
 }
 
 const userSchema = new Schema<IUser>(
@@ -32,6 +33,7 @@ const userSchema = new Schema<IUser>(
         "Password must contain at least one number, one uppercase and one lowercase letter, and at least 8 or more characters",
       ],
     },
+    conversations: [{ type: Schema.Types.ObjectId, ref: "Conversation" }],
   },
   { collection: "users" }
 );

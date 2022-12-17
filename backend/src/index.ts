@@ -8,6 +8,7 @@ import { Server } from "socket.io";
 import https from "https";
 import users from "./routes/users";
 import globalChat from "./routes/global-chat";
+import conversations from "./routes/conversations";
 import initializePassport from "./config/passportConfig";
 import passport from "passport";
 import session from "express-session";
@@ -40,6 +41,7 @@ app.use(passport.session());
 
 app.use("/users", users);
 app.use("/global-chat", globalChat);
+app.use("/conversations", conversations);
 
 const server = https.createServer(
   {
