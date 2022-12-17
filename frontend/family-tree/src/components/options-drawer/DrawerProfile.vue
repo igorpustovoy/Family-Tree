@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import useAuthStore from "@/stores/AuthStore";
-import defaultAvatar from "@/assets/images/default_profile.jpg";
+// import defaultAvatar from "@/assets/images/default_profile.jpg";
 
 const auth = useAuthStore();
 </script>
@@ -8,7 +8,11 @@ const auth = useAuthStore();
 <template>
   <div class="drawer-profile">
     <v-avatar :class="`elevation-4`">
-      <v-img heigh="100" :src="defaultAvatar" alt="avatar"></v-img>
+      <v-img
+        height="100"
+        :src="`https://i.pravatar.cc/50?u=${auth.username}`"
+        alt="avatar"
+      ></v-img>
     </v-avatar>
     <div class="drawer-profile-info">
       <div class="drawer-profile-info__username">{{ auth.username }}</div>

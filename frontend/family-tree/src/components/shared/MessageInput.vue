@@ -30,7 +30,11 @@ const sendMessage = async () => {
       label=""
       variant="underlined"
     ></v-text-field>
-    <v-btn :disabled="isDisabled" @click="sendMessage()" color="primary"
+    <v-btn
+      class="button"
+      :disabled="isDisabled"
+      @click="sendMessage()"
+      color="primary"
       >Send</v-btn
     >
   </div>
@@ -38,4 +42,8 @@ const sendMessage = async () => {
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+
+.button {
+  width: 100%;
+}
 </style>
