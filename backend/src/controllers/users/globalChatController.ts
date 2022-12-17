@@ -6,7 +6,9 @@ import getErrorMessage from "../../helpers/getErrorMessage";
 const globalChatController = {
   getChat: async (req: Request, res: Response) => {
     try {
-      const globalChat = await GlobalChat.find({})[0];
+      const globalChat = await GlobalChat.findOne({});
+
+      console.log("GLOBAL CHAT:", globalChat);
 
       if (!globalChat) {
         await GlobalChat.create({
@@ -14,7 +16,7 @@ const globalChatController = {
         });
       }
 
-      res.status(200).json({ messages: globalChat.messages });
+      res.status(200).json({ messages: globalChat?.messages });
     } catch (error) {
       getErrorMessage(error);
       res.status(500).json(error);
@@ -28,11 +30,11 @@ const globalChatController = {
     try {
       io.emit(`global_message`, { message, author });
 
-      const globalChat = await GlobalChat.find({})[0];
+      const globalChat = await GlobalChat.findOne({});
 
-      globalChat.messages.push({ author, message });
+      globalChat?.messages.push({ author, message });
 
-      await globalChat.save();
+      await globalChat?.save();
 
       return res.status(200).send();
     } catch (error) {

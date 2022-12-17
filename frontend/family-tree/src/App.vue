@@ -3,18 +3,18 @@ import { RouterView } from "vue-router";
 import NavBar from "./components/navigation/NavBar.vue";
 import OptionsDrawer from "./components/options-drawer/OptionsDrawer.vue";
 import useAuthStore from "./stores/AuthStore";
-import { ref } from "vue";
+import useDrawerStore from "./stores/DrawerStore";
 
 const auth = useAuthStore();
-
-const isDrawerOpen = ref(false);
+const drawer = useDrawerStore();
+drawer.initialize();
 </script>
 
 <template>
   <v-app theme="dark">
     <div v-if="auth.hasRequestedAuth">
       <NavBar />
-      <OptionsDrawer :isOpen="isDrawerOpen" />
+      <OptionsDrawer />
       <RouterView />
     </div>
     <!-- <div class="loading-screen" v-else>

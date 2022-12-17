@@ -12,7 +12,9 @@ defineProps<{
       <span>{{ title }}</span>
     </v-expansion-panel-title>
     <v-expansion-panel-text>
-      <slot></slot>
+      <template #default>
+        <slot>Coming Soon</slot>
+      </template>
     </v-expansion-panel-text>
   </v-expansion-panel>
 </template>

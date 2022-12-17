@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import User from "../models/User";
-import getErrorMessage from "../helpers/getErrorMessage";
+import User from "../../models/User";
+import getErrorMessage from "../../helpers/getErrorMessage";
 
 const registerController = {
   handleRegister: async (req: Request, res: Response) => {

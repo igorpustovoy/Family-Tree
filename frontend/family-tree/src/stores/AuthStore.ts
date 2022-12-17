@@ -2,12 +2,19 @@ import axios from "@/api/axios";
 import type IAuth from "@/models/IAuth";
 import { defineStore } from "pinia";
 
+interface IAuthState {
+  username: string;
+  email: string;
+  hasRequestedAuth: boolean;
+}
+
 const useAuthStore = defineStore("auth", {
-  state: () => ({
-    username: "",
-    email: "",
-    hasRequestedAuth: false,
-  }),
+  state: () =>
+    ({
+      username: "",
+      email: "",
+      hasRequestedAuth: false,
+    } as IAuthState),
 
   actions: {
     setAuth(username: string, email: string) {
