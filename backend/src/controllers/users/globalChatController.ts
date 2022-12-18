@@ -8,8 +8,6 @@ const globalChatController = {
     try {
       const globalChat = await GlobalChat.findOne({});
 
-      console.log("GLOBAL CHAT:", globalChat);
-
       if (!globalChat) {
         await GlobalChat.create({
           messages: [],

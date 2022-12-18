@@ -21,7 +21,37 @@ defineProps<{
 @import "@/assets/_variables.scss";
 
 .message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   max-height: 350px;
   overflow-y: auto;
+  .message {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 4px;
+    padding-right: 5px;
+    .message__author {
+      display: flex;
+      align-items: flex-end;
+      font-size: 0.85rem;
+    }
+
+    .message__content {
+      display: flex;
+      align-items: flex-end;
+      font-size: 0.95rem;
+      word-break: break-all;
+    }
+  }
+  .message.system-message {
+    padding: 5px 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.85rem;
+  }
 }
 </style>

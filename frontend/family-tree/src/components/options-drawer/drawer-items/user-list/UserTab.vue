@@ -1,8 +1,44 @@
 <script setup lang="ts">
-defineProps<{
+import useAuthStore from "@/stores/AuthStore";
+import useDrawerStore from "@/stores/DrawerStore";
+
+const props = defineProps<{
   username: string;
   email: string;
 }>();
+
+const drawer = useDrawerStore();
+
+console.log("CONVERSATIONS:", drawer.conversations);
+
+const handleOpenChat = () => {
+  const auth = useAuthStore();
+
+  const activeConversation = drawer.activeConversations.find(
+    (conversation) =>
+      conversation.participants.includes(props.username) &&
+      conversation.participants.includes(auth.username)
+  );
+
+  if (activeConversation) {
+    return;
+  }
+
+  const conversation = drawer.conversations.find(
+    (conversation) =>
+      conversation.participants.includes(props.username) &&
+      conversation.participants.includes(auth.username)
+  );
+
+  if (conversation) {
+    drawer.addActiveConversation(conversation);
+  } else {
+    drawer.addActiveConversation({
+      participants: [props.username, auth.username],
+      messages: [],
+    });
+  }
+};
 </script>
 
 <template>
@@ -24,6 +60,7 @@ defineProps<{
     </div>
     <div class="user-tab__right">
       <v-btn
+        @click="handleOpenChat()"
         size="40px"
         class="ma-2"
         color="none"

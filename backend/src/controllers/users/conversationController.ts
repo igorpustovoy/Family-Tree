@@ -7,13 +7,17 @@ import User from "../../models/User";
 const conversationController = {
   getConversations: async (req: any, res: Response) => {
     try {
-      const conversations = await User.findOne({
+      const user = await User.findOne({
         username: req.user.username,
       }).populate("conversations");
 
-      if (!conversations) {
+      if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
+
+      const conversations = user.conversations;
+
+      console.log("CONVERSATIONS: ", conversations);
 
       return res.status(200).json({ conversations });
     } catch (error) {
@@ -25,10 +29,12 @@ const conversationController = {
   sendMessage: async (req: any, res: Response) => {
     const { message, recipient } = req.body;
     const sender = req.user.username;
-    try {
-      io.emit(`private_message_${recipient}`, { message, author: sender });
-      io.emit(`private_message_${sender}`, { message, author: sender });
 
+    if (!message || !recipient) {
+      return res.status(400).json({ error: "Missing message or recipient" });
+    }
+
+    try {
       const conversation = await Conversation.findOne({
         $or: [
           { participants: [sender, recipient] },
@@ -40,6 +46,19 @@ const conversationController = {
         const newConversation = await Conversation.create({
           participants: [sender, recipient],
           messages: [],
+        });
+
+        io.emit(`private_message_${recipient}`, {
+          message,
+          author: sender,
+          conversationId: newConversation._id,
+          participants: newConversation.participants,
+        });
+        io.emit(`private_message_${sender}`, {
+          message,
+          author: sender,
+          conversationId: newConversation._id,
+          participants: newConversation.participants,
         });
 
         await User.findOneAndUpdate(
@@ -58,6 +77,19 @@ const conversationController = {
 
         return res.status(200).send();
       }
+
+      io.emit(`private_message_${recipient}`, {
+        message,
+        author: sender,
+        conversationId: conversation._id,
+        participants: conversation.participants,
+      });
+      io.emit(`private_message_${sender}`, {
+        message,
+        author: sender,
+        conversationId: conversation._id,
+        participants: conversation.participants,
+      });
 
       conversation.messages.push({ author: sender, message });
 

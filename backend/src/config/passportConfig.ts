@@ -9,7 +9,6 @@ const initialize = (passport: PassportStatic) => {
     password: string,
     done: any
   ) => {
-    console.log("authenticateUser", email, password);
     const user = await User.findOne({ email }).lean();
 
     if (!user) {

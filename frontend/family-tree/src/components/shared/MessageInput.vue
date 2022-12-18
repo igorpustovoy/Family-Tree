@@ -4,16 +4,22 @@ import { ref } from "vue";
 
 const props = defineProps<{
   chatUrl: string;
+  recipient?: string;
 }>();
 
 const message = ref("");
 const isDisabled = ref(false);
 
 const sendMessage = async () => {
+  if (message.value === "" || isDisabled.value) {
+    return;
+  }
+
   isDisabled.value = true;
   try {
     await axios.post(props.chatUrl, {
       message: message.value,
+      recipient: props.recipient,
     });
     message.value = "";
   } catch (error) {
