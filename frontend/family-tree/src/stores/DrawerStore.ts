@@ -90,33 +90,43 @@ const useDrawerStore = defineStore("drawer", {
           `private_message_${auth.username}`,
           (message: IPrivateChatMessage) => {
             let conversation = this.conversations.find(
-              (conversation) => conversation.id === message.conversationId
+              (conversation) => conversation._id === message.conversationId
             );
 
             if (conversation) {
-              // Already pushed to active conversation which is a pointer
-              //   conversation.messages.push({
-              //     message: message.message,
-              //     author: message.author,
-              //   });
-              //   console.log("MESSAGE PUSHED TO CONVERSATION: ", conversation);
+              this.conversations = this.conversations.filter(
+                (conversation) => conversation._id !== message.conversationId
+              );
+
+              this.conversations = [conversation, ...this.conversations];
             } else {
               conversation = {
-                id: message.conversationId,
+                _id: message.conversationId,
                 participants: message.participants,
                 messages: [
                   { message: message.message, author: message.author },
                 ],
               };
-              this.conversations.push(conversation);
+              this.conversations = [conversation, ...this.conversations];
             }
 
             const activeConversation = this.getActiveConversation(
               message.participants
             );
 
+            console.log(activeConversation?.messages, message.participants);
+
             if (!activeConversation) {
               this.addActiveConversation(conversation);
+
+              const newActiveConversation = this.getActiveConversation(
+                message.participants
+              );
+
+              newActiveConversation?.messages.push({
+                message: message.message,
+                author: message.author,
+              });
             } else {
               activeConversation.messages.push({
                 message: message.message,

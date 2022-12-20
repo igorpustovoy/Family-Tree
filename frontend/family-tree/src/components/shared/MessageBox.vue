@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type IChatMessage from "@/models/IChatMessage";
-import { computed } from "vue";
+import useDrawerStore from "@/stores/DrawerStore";
+import { storeToRefs } from "pinia";
+import { computed, ref, onMounted, watch } from "vue";
 
 const props = defineProps<{
   messages: IChatMessage[];
@@ -8,6 +10,22 @@ const props = defineProps<{
 }>();
 
 const isPrivate = computed(() => props.type === "private");
+
+let myRef = ref<HTMLElement | null>(null);
+
+const drawerStore = useDrawerStore();
+
+const { activeConversations } = storeToRefs(drawerStore);
+
+onMounted(() => {
+  myRef.value?.scrollIntoView({ behavior: "smooth" });
+  watch(props.messages, () => {
+    myRef.value?.scrollIntoView({ behavior: "smooth" });
+  });
+  watch(activeConversations, () => {
+    myRef.value?.scrollIntoView({ behavior: "smooth" });
+  });
+});
 </script>
 
 <template>
@@ -17,7 +35,7 @@ const isPrivate = computed(() => props.type === "private");
       <div class="message__content">{{ message.message }}</div>
       <v-divider></v-divider>
     </div>
-    <!-- <div ref={messagesEndRef} /> -->
+    <div ref="myRef"></div>
   </div>
 </template>
 

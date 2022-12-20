@@ -17,8 +17,6 @@ const conversationController = {
 
       const conversations = user.conversations;
 
-      console.log("CONVERSATIONS: ", conversations);
-
       return res.status(200).json({ conversations });
     } catch (error) {
       getErrorMessage(error);
@@ -47,6 +45,8 @@ const conversationController = {
           participants: [sender, recipient],
           messages: [],
         });
+
+        console.log("EMITTING TO ", recipient, " AND ", sender);
 
         io.emit(`private_message_${recipient}`, {
           message,
@@ -77,6 +77,8 @@ const conversationController = {
 
         return res.status(200).send();
       }
+
+      console.log("EMITTING TO ", recipient, " AND ", sender);
 
       io.emit(`private_message_${recipient}`, {
         message,

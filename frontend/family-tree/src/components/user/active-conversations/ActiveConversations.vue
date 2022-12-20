@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type IActiveConversation from "@/models/IActiveConversation";
-import useAuthStore from "@/stores/AuthStore";
+import useOtherUser from "@/composables/useOtherUser";
 import useDrawerStore from "@/stores/DrawerStore";
 import { storeToRefs } from "pinia";
 import PrivateChat from "./PrivateChat.vue";
@@ -9,15 +8,7 @@ const drawer = useDrawerStore();
 
 const { activeConversations } = storeToRefs(drawer);
 
-const auth = useAuthStore();
-
-const getOtherUser = (conversation: IActiveConversation) => {
-  const user = conversation.participants.find(
-    (participant) => participant !== auth.username
-  ) as string;
-
-  return user;
-};
+const getOtherUser = useOtherUser();
 </script>
 
 <template>
@@ -26,7 +17,7 @@ const getOtherUser = (conversation: IActiveConversation) => {
       v-for="(conversation, index) in activeConversations"
       :key="index"
       :messages="conversation.messages"
-      :otherUser="getOtherUser(conversation)"
+      :otherUser="getOtherUser(conversation.participants)"
     />
   </div>
 </template>

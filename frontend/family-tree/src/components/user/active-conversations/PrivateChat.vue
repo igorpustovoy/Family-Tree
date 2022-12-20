@@ -26,7 +26,7 @@ defineProps<{
 @import "@/assets/_variables.scss";
 
 .chat-window {
-  width: 230px;
+  width: 250px;
   height: 350px;
   display: flex;
   flex-direction: column;

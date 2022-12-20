@@ -1,7 +1,7 @@
 import type IChatMessage from "./IChatMessage";
 
 interface IConversation {
-  id: string;
+  _id: string;
   participants: string[];
   messages: IChatMessage[];
 }

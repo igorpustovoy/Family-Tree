@@ -4,6 +4,7 @@ import DrawerProfile from "./DrawerProfile.vue";
 import GlobalChat from "./drawer-items/GlobalChat.vue";
 import DrawerItem from "./DrawerItem.vue";
 import UserList from "./drawer-items/user-list/UserList.vue";
+import ConversationList from "./drawer-items/conversation-list/ConversationList.vue";
 
 const drawer = useDrawerStore();
 </script>
@@ -20,7 +21,9 @@ const drawer = useDrawerStore();
       <DrawerItem title="Users" icon="mdi-account-group">
         <UserList />
       </DrawerItem>
-      <DrawerItem title="Messages" icon="mdi-forum"></DrawerItem>
+      <DrawerItem title="Conversations" icon="mdi-forum">
+        <ConversationList />
+      </DrawerItem>
     </v-expansion-panels>
   </v-navigation-drawer>
 </template>

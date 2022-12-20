@@ -1,7 +1,7 @@
 import type IChatMessage from "./IChatMessage";
 
 interface IActiveConversation {
-  id?: string;
+  _id?: string;
   participants: string[];
   messages: IChatMessage[];
 }

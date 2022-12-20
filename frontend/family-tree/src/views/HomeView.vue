@@ -17,7 +17,6 @@ const auth = useAuthStore();
 
 <template>
   <main>
-    <v-btn color="red" @click="testAuth()">TEST AUTH</v-btn>
     <h2 v-if="auth.isAuthenticated">
       Welcome {{ auth.username }} {{ auth.email }}
     </h2>

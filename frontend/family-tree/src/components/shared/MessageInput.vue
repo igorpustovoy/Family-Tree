@@ -34,6 +34,7 @@ const isPrivate = computed(() => props.type === "private");
 </script>
 
 <template>
+  <v-divider></v-divider>
   <div class="chat-input" :class="{ 'private-chat': isPrivate }">
     <v-text-field
       v-if="isPrivate"
