@@ -28,12 +28,22 @@ const useDrawerStore = defineStore("drawer", {
       this.isOpen = !this.isOpen;
     },
 
+    getConversation(participants: string[]) {
+      return this.conversations.find((conversation) =>
+        conversation.participants.every((participant) =>
+          participants.includes(participant)
+        )
+      );
+    },
+
     addActiveConversation(conversation: IActiveConversation) {
       if (this.activeConversations.length >= 3) {
         this.activeConversations.shift();
       }
 
-      this.activeConversations.push(conversation);
+      this.activeConversations = [...this.activeConversations, conversation];
+
+      console.log("ACTIVE CONVERSATIONS: ", this.activeConversations);
     },
 
     getActiveConversation(participants: string[]) {
@@ -41,6 +51,15 @@ const useDrawerStore = defineStore("drawer", {
         conversation.participants.every((participant) =>
           participants.includes(participant)
         )
+      );
+    },
+
+    closeActiveConversation(participants: string[]) {
+      this.activeConversations = this.activeConversations.filter(
+        (conversation) =>
+          !conversation.participants.every((participant) =>
+            participants.includes(participant)
+          )
       );
     },
 
@@ -67,12 +86,9 @@ const useDrawerStore = defineStore("drawer", {
 
         const auth = useAuthStore();
 
-        console.log("AUTH STORE IN DRAWER STARE:::", auth.username);
-
         socket.on(
           `private_message_${auth.username}`,
           (message: IPrivateChatMessage) => {
-            console.log("MESSAGE: ", message.conversationId);
             let conversation = this.conversations.find(
               (conversation) => conversation.id === message.conversationId
             );
@@ -107,8 +123,6 @@ const useDrawerStore = defineStore("drawer", {
                 author: message.author,
               });
             }
-
-            console.log(this.conversations);
           }
         );
       } catch (error) {

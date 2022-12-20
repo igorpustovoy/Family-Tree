@@ -10,8 +10,8 @@ const messages = drawerStore.globalMessages;
 
 <template>
   <div className="chat-container">
-    <MessageBox :messages="messages" />
-    <MessageInput chatUrl="/global-chat" />
+    <MessageBox type="global" :messages="messages" />
+    <MessageInput type="global" chatUrl="/global-chat" />
   </div>
 </template>
 

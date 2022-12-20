@@ -13,8 +13,12 @@ defineProps<{
 <template>
   <div class="chat-window">
     <ChatHeader :otherUser="otherUser" />
-    <MessageBox :messages="messages" />
-    <MessageInput :recipient="otherUser" :chat-url="'/conversations'" />
+    <MessageBox type="private" :messages="messages" />
+    <MessageInput
+      type="private"
+      :recipient="otherUser"
+      :chat-url="'/conversations'"
+    />
   </div>
 </template>
 
@@ -22,12 +26,11 @@ defineProps<{
 @import "@/assets/_variables.scss";
 
 .chat-window {
-  width: 200px;
-  height: 300px;
+  width: 230px;
+  height: 350px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  border: 5px solid white;
   border-bottom: 0px;
+  background-color: $background-color-secondary;
 }
 </style>
