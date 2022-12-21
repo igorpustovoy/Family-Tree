@@ -78,8 +78,6 @@ const conversationController = {
         return res.status(200).send();
       }
 
-      console.log("EMITTING TO ", recipient, " AND ", sender);
-
       io.emit(`private_message_${recipient}`, {
         message,
         author: sender,

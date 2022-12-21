@@ -10,6 +10,7 @@ import https from "https";
 import users from "./routes/users";
 import globalChat from "./routes/global-chat";
 import conversations from "./routes/conversations";
+import familyTree from "./routes/family-tree";
 import initializePassport from "./config/passportConfig";
 import passport from "passport";
 import session from "express-session";
@@ -43,6 +44,7 @@ app.use(passport.session());
 app.use("/users", users);
 app.use("/global-chat", globalChat);
 app.use("/conversations", conversations);
+app.use("/family-tree", familyTree);
 
 const server = https.createServer(
   {

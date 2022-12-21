@@ -1,0 +1,18 @@
+import { Router } from "express";
+import addPersonController from "../controllers/family-tree/addPersonController";
+import familyTreeController from "../controllers/family-tree/familyTreeController";
+import checkAuthenticated from "../middleware/checkAuthenticated";
+
+const router = Router();
+
+router.get("/", checkAuthenticated, familyTreeController.handleGetTree);
+
+router.post("/", checkAuthenticated, familyTreeController.handleInitializeTree);
+
+router.post(
+  "/add-person",
+  checkAuthenticated,
+  addPersonController.handleAddPerson
+);
+
+export default router;
