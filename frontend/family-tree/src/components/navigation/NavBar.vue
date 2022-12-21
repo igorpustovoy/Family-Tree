@@ -55,6 +55,11 @@ const handleLogout = async () => {
   width: 100%;
   background-color: black;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  .navbar__logo {
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+  }
   img {
     margin-left: 2rem;
   }

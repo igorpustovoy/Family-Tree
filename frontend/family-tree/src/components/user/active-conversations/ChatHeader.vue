@@ -44,7 +44,7 @@ const handleCloseChat = () => {
   display: flex;
   justify-content: space-between;
   background-color: $theme-color;
-  padding: 10px;
+  padding: 6px;
   .chat-header__user-info {
     display: flex;
     gap: 10px;
