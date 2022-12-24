@@ -15,13 +15,12 @@ interface IDrawerState {
 }
 
 const useDrawerStore = defineStore("drawer", {
-  state: () =>
-    ({
-      isOpen: false,
-      globalMessages: [],
-      conversations: [],
-      activeConversations: [],
-    } as IDrawerState),
+  state: (): IDrawerState => ({
+    isOpen: false,
+    globalMessages: [],
+    conversations: [],
+    activeConversations: [],
+  }),
 
   actions: {
     toggleDrawer() {

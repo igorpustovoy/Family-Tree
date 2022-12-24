@@ -1,6 +1,8 @@
 import axios from "@/api/axios";
 import type IAuth from "@/models/IAuth";
 import { defineStore } from "pinia";
+import useDrawerStore from "./DrawerStore";
+import useFamilyTreeStore from "./FamilyTreeStore";
 
 interface IAuthState {
   username: string;

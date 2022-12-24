@@ -17,6 +17,7 @@
     "socket.io-client": "^4.5.4",
     "vite-plugin-mkcert": "^1.10.1",
     "vue": "^3.2.45",
+    "vue-family-tree": "^0.1.8",
     "vue-router": "^4.1.6",
     "vuetify": "^3.0.4"
   },

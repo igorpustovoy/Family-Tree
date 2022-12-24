@@ -5,9 +5,9 @@ import getErrorMessage from "../../helpers/getErrorMessage";
 const addPersonController = {
   handleAddPerson: async (req: any, res: Response) => {
     const treeOwner = req.user.username;
-    const { name, targetRole, target } = req.body;
+    const { name, relationType, relative } = req.body;
 
-    if (!name || !targetRole || !target) {
+    if (!name || !relationType || !relative) {
       return res.status(400).json({ error: "Missing name or type or target" });
     }
 
@@ -16,37 +16,38 @@ const addPersonController = {
     try {
       let result;
 
-      if (targetRole === "child") {
+      console.log("STARTING MATCH");
+
+      if (relationType === "Child") {
         result = await session.executeWrite((tx) =>
           tx.run(
             `MATCH (n:Person {name: $target, treeOwner: $treeOwner})
-            CREATE (n)<-[:child]-(m:Person {name: $name, treeOwner: $treeOwner})
-            CREATE (n)-[:parent]->(m:Person {name: $name, treeOwner: $treeOwner})
+            CREATE (n)<-[:CHILD]-(m:Person {name: $name, treeOwner: $treeOwner})
             RETURN m`,
-            { name, targetRole, target, treeOwner }
+            { name, targetRole: relationType, target: relative, treeOwner }
           )
         );
       }
 
-      if (targetRole === "parent") {
+      if (relationType === "Parent") {
         result = await session.executeWrite((tx) =>
           tx.run(
             `MATCH (n:Person {name: $target, treeOwner: $treeOwner})
-            CREATE (n)-[:child]->(m:Person {name: $name, treeOwner: $treeOwner})
-            CREATE (n)<-[:parent]-(m:Person {name: $name, treeOwner: $treeOwner})
+            CREATE (n)-[:CHILD]->(m:Person {name: $name, treeOwner: $treeOwner})
             RETURN m`,
-            { name, targetRole, target, treeOwner }
+            { name, targetRole: relationType, target: relative, treeOwner }
           )
         );
       }
 
-      console.log(result);
+      console.log("RESULT:", result);
 
-      const person = result.records[0].get(0);
+      const person = result?.records[0].get(0);
 
       return res.status(200).json({ person });
     } catch (error) {
-      getErrorMessage(error);
+      console.log(getErrorMessage(error));
+      res.status(500).json({ error: getErrorMessage(error) });
     } finally {
       await session.close();
     }

@@ -24,7 +24,7 @@ const registerController = {
       if (error.code === 11000) {
         return res.status(402).json({ error: "Username or email taken" });
       }
-      getErrorMessage(error);
+      console.log(getErrorMessage(error));
       res.status(500).json({ error: getErrorMessage(error) });
     }
   },

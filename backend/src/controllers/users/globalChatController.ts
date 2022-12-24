@@ -16,8 +16,8 @@ const globalChatController = {
 
       res.status(200).json({ messages: globalChat?.messages });
     } catch (error) {
-      getErrorMessage(error);
-      res.status(500).json(error);
+      console.log(getErrorMessage(error));
+      res.status(500).json(getErrorMessage(error));
     }
   },
 
@@ -36,8 +36,8 @@ const globalChatController = {
 
       return res.status(200).send();
     } catch (error) {
-      getErrorMessage(error);
-      res.status(500).json(error);
+      console.log(getErrorMessage(error));
+      res.status(500).json(getErrorMessage(error));
     }
   },
 };

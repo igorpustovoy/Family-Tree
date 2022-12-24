@@ -2,7 +2,7 @@ import axios from "@/api/axios";
 import { defineStore } from "pinia";
 
 interface IFamilyTreeState {
-  familyTree: [];
+  familyTree: any[];
 }
 
 const useFamilyTreeStore = defineStore("family-tree", {
@@ -12,13 +12,33 @@ const useFamilyTreeStore = defineStore("family-tree", {
     } as IFamilyTreeState),
 
   actions: {
-    async getFamilyTree() {
+    async fetchFamilyTree() {
       try {
         const response = await axios.get("/family-tree");
-        this.familyTree = response.data;
+
+        console.log("FAMILY TREE FROM API: ", response.data);
+
+        this.familyTree = [
+          ...this.familyTree,
+          ...response.data.people.map((person: any) => {
+            return person.properties;
+          }),
+        ];
       } catch (error) {
         console.log(error);
       }
+    },
+
+    addFirstPerson(person: { name: string }) {
+      this.familyTree = [...this.familyTree, person];
+    },
+
+    addPerson(person: { name: string }) {
+      this.familyTree = [...this.familyTree, person];
+    },
+
+    getNameList() {
+      return this.familyTree.map((person) => person.name);
     },
   },
 });

@@ -9,8 +9,8 @@ const usersController = {
 
       return res.status(200).json({ users });
     } catch (error) {
-      getErrorMessage(error);
-      res.status(500).json(error);
+      console.log(getErrorMessage(error));
+      res.status(500).json(getErrorMessage(error));
     }
   },
 };

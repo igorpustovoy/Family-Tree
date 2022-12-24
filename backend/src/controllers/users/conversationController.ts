@@ -19,8 +19,8 @@ const conversationController = {
 
       return res.status(200).json({ conversations });
     } catch (error) {
-      getErrorMessage(error);
-      res.status(500).json(error);
+      console.log(getErrorMessage(error));
+      res.status(500).json(getErrorMessage(error));
     }
   },
 
@@ -97,8 +97,8 @@ const conversationController = {
 
       return res.status(200).send();
     } catch (error) {
-      getErrorMessage(error);
-      res.status(500).json(error);
+      console.log(getErrorMessage(error));
+      res.status(500).json(getErrorMessage(error));
     }
   },
 };

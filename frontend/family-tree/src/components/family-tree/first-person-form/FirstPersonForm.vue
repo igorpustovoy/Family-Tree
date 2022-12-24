@@ -1,0 +1,68 @@
+<script setup lang="ts">
+import { firstPersonFormModel } from "./first-person-validation";
+import { ref } from "vue";
+import axios from "@/api/axios";
+import useFamilyTreeStore from "@/stores/FamilyTreeStore";
+
+const formModel = firstPersonFormModel;
+
+const isSubmitting = ref(false);
+
+const isFormValid = ref(false);
+
+const tree = useFamilyTreeStore();
+
+const handleAddFirstPerson = async () => {
+  if (isFormValid.value) {
+    isSubmitting.value = true;
+    try {
+      const response = await axios.post("/family-tree", formModel);
+
+      const person = response.data;
+
+      tree.addFirstPerson(person);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      isSubmitting.value = false;
+    }
+  }
+};
+</script>
+
+<template>
+  <v-form
+    v-on:submit.prevent="handleAddFirstPerson()"
+    class="first-person-form"
+    v-model="isFormValid"
+    :readonly="isSubmitting"
+  >
+    <h2>Add a first person to your tree:</h2>
+    <v-text-field
+      class="text-field"
+      v-model="formModel.name"
+      label="Enter person name..."
+      required
+    ></v-text-field>
+    <v-btn :disabled="isSubmitting" type="submit"> Add Person </v-btn>
+  </v-form>
+</template>
+
+<style lang="scss" scoped>
+@import "@/assets/_variables.scss";
+
+.first-person-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 500px;
+  gap: 30px;
+  padding: 1rem;
+  border: 1px solid $theme-color;
+  border-radius: 5px;
+  .text-field {
+    width: 300px;
+  }
+}
+</style>

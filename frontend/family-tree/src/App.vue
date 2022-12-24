@@ -1,14 +1,26 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { watchEffect } from "vue";
 import { RouterView } from "vue-router";
 import NavBar from "./components/navigation/NavBar.vue";
 import OptionsDrawer from "./components/options-drawer/OptionsDrawer.vue";
 import ActiveConversations from "./components/user/active-conversations/ActiveConversations.vue";
 import useAuthStore from "./stores/AuthStore";
 import useDrawerStore from "./stores/DrawerStore";
+import useFamilyTreeStore from "./stores/FamilyTreeStore";
 
 const auth = useAuthStore();
 const drawer = useDrawerStore();
-drawer.initialize();
+const tree = useFamilyTreeStore();
+
+const { isAuthenticated } = storeToRefs(auth);
+
+watchEffect(() => {
+  if (isAuthenticated.value) {
+    drawer.initialize();
+    tree.fetchFamilyTree();
+  }
+});
 </script>
 
 <template>

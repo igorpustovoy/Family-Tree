@@ -16,13 +16,13 @@ const familyTreeController = {
           { treeOwner }
         )
       );
-      console.log(result);
 
-      const people = result.records.map((record) => record.get(0));
+      const people = result?.records.map((record) => record.get(0));
 
       return res.status(200).json({ people });
     } catch (error) {
-      getErrorMessage(error);
+      console.log(getErrorMessage(error));
+      res.status(500).json({ error: getErrorMessage(error) });
     } finally {
       await session.close();
     }
@@ -45,13 +45,13 @@ const familyTreeController = {
           { name, treeOwner }
         )
       );
-      console.log(result);
 
-      const person = result.records[0].get(0);
+      const person = result?.records[0].get(0);
 
       return res.status(200).json({ person });
     } catch (error) {
-      getErrorMessage(error);
+      console.log(getErrorMessage(error));
+      res.status(500).json({ error: getErrorMessage(error) });
     } finally {
       await session.close();
     }

@@ -24,4 +24,8 @@ const getOtherUser = useOtherUser();
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+
+.active-conversations {
+  z-index: 20;
+}
 </style>
