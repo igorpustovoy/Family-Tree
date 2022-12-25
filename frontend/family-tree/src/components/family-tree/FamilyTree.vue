@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import VueFamilyTree from "@/components/family-tree/tree-view/VueFamilyTree.vue";
-import tree from "@/assets/testTree";
+import useFamilyTreeStore from "@/stores/FamilyTreeStore";
+
+const treeStore = useFamilyTreeStore();
 
 const handleCardClick = (person: any) => {
   console.log(person);
@@ -8,7 +10,10 @@ const handleCardClick = (person: any) => {
 </script>
 
 <template>
-  <VueFamilyTree :tree="tree" @card-click="handleCardClick" />
+  <VueFamilyTree
+    :tree="treeStore.getViewableTreeStructure"
+    @card-click="handleCardClick"
+  />
 </template>
 
 <style lang="scss" scoped>

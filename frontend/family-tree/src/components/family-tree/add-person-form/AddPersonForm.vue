@@ -9,7 +9,7 @@ import {
 
 const tree = useFamilyTreeStore();
 
-const names = tree.getNameList();
+const names = tree.getNameList;
 
 const isFormValid = ref(false);
 

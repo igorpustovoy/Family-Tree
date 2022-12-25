@@ -62,7 +62,7 @@ const familyTreeController = {
       console.log("CREATED PERSON: ", person);
 
       return res.status(200).json({
-        person,
+        person: { ...person, children: [] },
       });
     } catch (error) {
       console.log(getErrorMessage(error));

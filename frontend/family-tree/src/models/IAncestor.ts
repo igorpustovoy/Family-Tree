@@ -1,6 +1,9 @@
 interface IAncestor {
+  id: string;
   name: string;
-  children?: IAncestor[];
+  isRoot: boolean;
+  treeOwner: string;
+  children: string[];
 }
 
 export default IAncestor;

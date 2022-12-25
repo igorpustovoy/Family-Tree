@@ -22,7 +22,7 @@ const handleAddFirstPerson = async () => {
 
       console.log(person);
 
-      tree.addFirstPerson(person);
+      tree.addPerson(person);
     } catch (error) {
       console.error(error);
     } finally {
