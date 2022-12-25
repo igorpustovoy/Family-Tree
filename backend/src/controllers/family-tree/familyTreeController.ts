@@ -1,6 +1,7 @@
 import { Response } from "express";
 import driver from "../../config/neo4jDriver";
 import getErrorMessage from "../../helpers/getErrorMessage";
+import { v4 as uuidv4 } from "uuid";
 
 const familyTreeController = {
   handleGetTree: async (req: any, res: Response) => {
@@ -11,13 +12,21 @@ const familyTreeController = {
     try {
       const result = await session.executeRead((tx) =>
         tx.run(
-          `MATCH (n:Person {treeOwner: $treeOwner})
-            RETURN n`,
+          `MATCH (p:Person { treeOwner: $treeOwner })
+          OPTIONAL MATCH (p)-[:CHILD]->(c:Person)
+          RETURN p as person, collect(c.id) as children`,
           { treeOwner }
         )
       );
 
-      const people = result?.records.map((record) => record.get(0));
+      const people = result.records.map((record) => {
+        return {
+          ...record.get("person").properties,
+          children: record.get("children"),
+        };
+      });
+
+      console.log(people);
 
       return res.status(200).json({ people });
     } catch (error) {
@@ -36,19 +45,25 @@ const familyTreeController = {
       return res.status(400).json({ error: "Missing name" });
     }
 
+    const id = uuidv4();
+
     const session = driver.session();
 
     try {
       const result = await session.executeWrite((tx) =>
         tx.run(
-          `CREATE (n:Person {name: $name, treeOwner: $treeOwner}) RETURN n`,
-          { name, treeOwner }
+          `CREATE (n:Person {name: $name, id: $id, isRoot: true, treeOwner: $treeOwner}) RETURN n`,
+          { name, id, treeOwner }
         )
       );
 
-      const person = result?.records[0].get(0);
+      const person = result?.records[0].get(0).properties;
 
-      return res.status(200).json({ person });
+      console.log("CREATED PERSON: ", person);
+
+      return res.status(200).json({
+        person,
+      });
     } catch (error) {
       console.log(getErrorMessage(error));
       res.status(500).json({ error: getErrorMessage(error) });

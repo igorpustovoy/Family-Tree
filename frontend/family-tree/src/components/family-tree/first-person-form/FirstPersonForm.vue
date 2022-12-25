@@ -18,7 +18,9 @@ const handleAddFirstPerson = async () => {
     try {
       const response = await axios.post("/family-tree", formModel);
 
-      const person = response.data;
+      const person = response.data.person;
+
+      console.log(person);
 
       tree.addFirstPerson(person);
     } catch (error) {

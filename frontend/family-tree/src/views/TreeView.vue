@@ -16,10 +16,10 @@ console.log(familyTree);
   <main class="family-tree">
     <OptionsBar class="options-bar" />
     <FirstPersonForm class="add-first-person" v-if="!familyTree.length" />
-    <section v-else>
+    <FamilyTree v-else />
+    <!-- <section v-else>
       {{ familyTree }}
-      <FamilyTree />
-    </section>
+    </section> -->
   </main>
 </template>
 

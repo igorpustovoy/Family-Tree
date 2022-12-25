@@ -25,7 +25,7 @@ const handleAddPerson = async () => {
   }
   isSubmitting.value = true;
   try {
-    const response = await axios.post("/family-tree/add-person", formModel);
+    const response = await axios.post("/family-tree/add-descendant", formModel);
 
     console.log(response.data);
 
@@ -58,13 +58,6 @@ const handleAddPerson = async () => {
       :rules="formRules.relative"
       v-model="formModel.relative"
     ></v-autocomplete>
-
-    <v-select
-      label="Who is your person to the relative?"
-      :items="['Child', 'Parent']"
-      :rules="formRules.relationType"
-      v-model="formModel.relationType"
-    ></v-select>
 
     <v-btn :disabled="!isFormValid || isSubmitting" type="submit">
       Add Person

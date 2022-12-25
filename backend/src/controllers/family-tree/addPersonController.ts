@@ -1,48 +1,34 @@
 import { Response } from "express";
 import driver from "../../config/neo4jDriver";
 import getErrorMessage from "../../helpers/getErrorMessage";
+import { v4 as uuidv4 } from "uuid";
 
 const addPersonController = {
-  handleAddPerson: async (req: any, res: Response) => {
+  handleAddDescendant: async (req: any, res: Response) => {
     const treeOwner = req.user.username;
-    const { name, relationType, relative } = req.body;
+    const { name, relative } = req.body;
 
-    if (!name || !relationType || !relative) {
-      return res.status(400).json({ error: "Missing name or type or target" });
+    if (!name || !relative) {
+      return res.status(400).json({ error: "Missing name or relative" });
     }
 
     const session = driver.session();
 
     try {
-      let result;
+      const id = uuidv4();
 
-      console.log("STARTING MATCH");
-
-      if (relationType === "Child") {
-        result = await session.executeWrite((tx) =>
-          tx.run(
-            `MATCH (n:Person {name: $target, treeOwner: $treeOwner})
-            CREATE (n)<-[:CHILD]-(m:Person {name: $name, treeOwner: $treeOwner})
+      const result = await session.executeWrite((tx) =>
+        tx.run(
+          `MATCH (n:Person {name: $relative, treeOwner: $treeOwner})
+            CREATE (n)-[:CHILD]->(m:Person {name: $name, id: $id, isRoot: false, treeOwner: $treeOwner})
             RETURN m`,
-            { name, targetRole: relationType, target: relative, treeOwner }
-          )
-        );
-      }
-
-      if (relationType === "Parent") {
-        result = await session.executeWrite((tx) =>
-          tx.run(
-            `MATCH (n:Person {name: $target, treeOwner: $treeOwner})
-            CREATE (n)-[:CHILD]->(m:Person {name: $name, treeOwner: $treeOwner})
-            RETURN m`,
-            { name, targetRole: relationType, target: relative, treeOwner }
-          )
-        );
-      }
-
-      console.log("RESULT:", result);
+          { relative, name, id, treeOwner }
+        )
+      );
 
       const person = result?.records[0].get(0);
+
+      console.log("CREATED PERSON: ", person);
 
       return res.status(200).json({ person });
     } catch (error) {

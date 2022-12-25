@@ -18,12 +18,7 @@ const useFamilyTreeStore = defineStore("family-tree", {
 
         console.log("FAMILY TREE FROM API: ", response.data);
 
-        this.familyTree = [
-          ...this.familyTree,
-          ...response.data.people.map((person: any) => {
-            return person.properties;
-          }),
-        ];
+        this.familyTree = [...this.familyTree, ...response.data.people];
       } catch (error) {
         console.log(error);
       }

@@ -10,9 +10,9 @@ router.get("/", checkAuthenticated, familyTreeController.handleGetTree);
 router.post("/", checkAuthenticated, familyTreeController.handleInitializeTree);
 
 router.post(
-  "/add-person",
+  "/add-descendant",
   checkAuthenticated,
-  addPersonController.handleAddPerson
+  addPersonController.handleAddDescendant
 );
 
 export default router;

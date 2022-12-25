@@ -217,7 +217,7 @@ export default {
   }
   &__person {
     position: relative;
-    z-index: 10;
+    z-index: 5;
   }
 }
 </style>

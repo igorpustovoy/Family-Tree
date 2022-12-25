@@ -3,13 +3,18 @@ import AddPersonModal from "./AddPersonModal.vue";
 </script>
 
 <template>
-  <ul>
-    <li>
-      <AddPersonModal />
-    </li>
-  </ul>
+  <div class="options-bar">
+    <AddPersonModal />
+  </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+
+.options-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 9;
+}
 </style>
