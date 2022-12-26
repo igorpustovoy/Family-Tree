@@ -41,8 +41,6 @@ const useDrawerStore = defineStore("drawer", {
       }
 
       this.activeConversations = [...this.activeConversations, conversation];
-
-      console.log("ACTIVE CONVERSATIONS: ", this.activeConversations);
     },
 
     getActiveConversation(participants: string[]) {

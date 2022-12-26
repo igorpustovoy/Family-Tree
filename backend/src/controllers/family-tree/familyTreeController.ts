@@ -22,11 +22,9 @@ const familyTreeController = {
       const people = result.records.map((record) => {
         return {
           ...record.get("person").properties,
-          children: record.get("children"),
+          children: record.get("children").reverse(),
         };
       });
-
-      console.log(people);
 
       return res.status(200).json({ people });
     } catch (error) {
@@ -58,8 +56,6 @@ const familyTreeController = {
       );
 
       const person = result?.records[0].get(0).properties;
-
-      console.log("CREATED PERSON: ", person);
 
       return res.status(200).json({
         person: { ...person, children: [] },

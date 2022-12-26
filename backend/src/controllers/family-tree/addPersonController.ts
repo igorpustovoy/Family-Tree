@@ -6,10 +6,12 @@ import { v4 as uuidv4 } from "uuid";
 const addPersonController = {
   handleAddDescendant: async (req: any, res: Response) => {
     const treeOwner = req.user.username;
-    const { name, relative } = req.body;
+    const { name, relativeId } = req.body;
 
-    if (!name || !relative) {
-      return res.status(400).json({ error: "Missing name or relative" });
+    console.log(name, relativeId);
+
+    if (!name || !relativeId) {
+      return res.status(400).json({ error: "Missing name or relativeId" });
     }
 
     const session = driver.session();
@@ -19,18 +21,17 @@ const addPersonController = {
 
       const result = await session.executeWrite((tx) =>
         tx.run(
-          `MATCH (n:Person {name: $relative, treeOwner: $treeOwner})
+          `MATCH (n:Person {id: $relativeId, treeOwner: $treeOwner})
             CREATE (n)-[:CHILD]->(m:Person {name: $name, id: $id, isRoot: false, treeOwner: $treeOwner})
             RETURN m`,
-          { relative, name, id, treeOwner }
+          { relativeId, name, id, treeOwner }
         )
       );
 
-      const person = result?.records[0].get(0);
+      console.log(result.records[0]);
+      const person = result.records[0].get(0).properties;
 
-      console.log("CREATED PERSON: ", person);
-
-      return res.status(200).json({ person });
+      return res.status(200).json({ person: { ...person, children: [] } });
     } catch (error) {
       console.log(getErrorMessage(error));
       res.status(500).json({ error: getErrorMessage(error) });

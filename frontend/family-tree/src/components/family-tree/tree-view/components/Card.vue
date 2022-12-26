@@ -20,6 +20,7 @@ export default {
   props: {
     name: String,
     image: String,
+    id: String,
     source: Object,
   },
   methods: {

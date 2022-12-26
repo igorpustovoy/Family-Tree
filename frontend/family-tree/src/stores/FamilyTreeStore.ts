@@ -25,8 +25,13 @@ const useFamilyTreeStore = defineStore("family-tree", {
       }
     },
 
-    addPerson(person: IAncestor) {
-      this.familyTree = [...this.familyTree, person];
+    addChild(parentId: string, person: IAncestor) {
+      const parent = this.familyTree.find((person) => person.id === parentId);
+
+      if (!parent) return;
+
+      parent.children.push(person.id);
+      this.familyTree.push(person);
     },
   },
 
@@ -51,7 +56,8 @@ const useFamilyTreeStore = defineStore("family-tree", {
             childrenList.push({
               firstPerson: {
                 name: object.name,
-                image: "https://picsum.photos/300/300?random=" + object.id,
+                image: `https://fakeface.rest/face/view/${object.id}`,
+                id: object.id,
               },
               children: [...mapObjects(children as IAncestor[])],
             });
@@ -59,7 +65,8 @@ const useFamilyTreeStore = defineStore("family-tree", {
             childrenList.push({
               firstPerson: {
                 name: object.name,
-                image: "https://picsum.photos/300/300?random=" + object.id,
+                image: `https://fakeface.rest/face/view/${object.id}`,
+                id: object.id,
               },
             });
           }

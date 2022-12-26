@@ -7,9 +7,14 @@ import {
   addPersonFormRules,
 } from "./add-person-validation";
 
-const tree = useFamilyTreeStore();
+const emit = defineEmits(["close-modal"]);
 
-const names = tree.getNameList;
+const props = defineProps<{
+  id: string;
+  type: "spouse" | "child";
+}>();
+
+const tree = useFamilyTreeStore();
 
 const isFormValid = ref(false);
 
@@ -25,11 +30,21 @@ const handleAddPerson = async () => {
   }
   isSubmitting.value = true;
   try {
-    const response = await axios.post("/family-tree/add-descendant", formModel);
+    const url =
+      props.type === "spouse"
+        ? "/family-tree/add-spouse"
+        : "/family-tree/add-descendant";
 
-    console.log(response.data);
+    const response = await axios.post(url, {
+      name: formModel.name,
+      relativeId: props.id,
+    });
 
-    tree.addPerson(response.data.person);
+    tree.addChild(props.id, response.data.person);
+
+    emit("close-modal");
+
+    formModel.name = "";
   } catch (error) {
     console.log(error);
   }
@@ -52,15 +67,8 @@ const handleAddPerson = async () => {
       :rules="formRules.name"
     ></v-text-field>
 
-    <v-autocomplete
-      label="Select relative..."
-      :items="names"
-      :rules="formRules.relative"
-      v-model="formModel.relative"
-    ></v-autocomplete>
-
     <v-btn :disabled="!isFormValid || isSubmitting" type="submit">
-      Add Person
+      {{ props.type === "spouse" ? "Add Spouse" : "Add Child" }}
     </v-btn>
   </v-form>
 </template>

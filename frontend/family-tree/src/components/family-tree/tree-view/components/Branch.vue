@@ -24,6 +24,7 @@
                 <slot name="card" :item="block.firstPerson">
                   <Card
                     :image="block.firstPerson.image"
+                    :id="block.firstPerson.id"
                     :name="block.firstPerson.name"
                     :source="block.firstPerson"
                     @click="$emit('card-click', $event)"
@@ -36,6 +37,7 @@
                 <slot name="card" :item="block.secondPerson">
                   <Card
                     :image="block.secondPerson.image"
+                    :id="block.firstPerson.id"
                     :name="block.secondPerson.name"
                     :source="block.secondPerson"
                     @click="$emit('card-click', $event)"

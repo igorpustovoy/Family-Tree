@@ -11,12 +11,11 @@ interface IAuthState {
 }
 
 const useAuthStore = defineStore("auth", {
-  state: () =>
-    ({
-      username: "",
-      email: "",
-      hasRequestedAuth: false,
-    } as IAuthState),
+  state: (): IAuthState => ({
+    username: "",
+    email: "",
+    hasRequestedAuth: false,
+  }),
 
   actions: {
     setAuth(username: string, email: string) {
