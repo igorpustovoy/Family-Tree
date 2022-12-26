@@ -7,8 +7,6 @@ import { storeToRefs } from "pinia";
 const tree = useFamilyTreeStore();
 
 const { familyTree } = storeToRefs(tree);
-
-console.log(familyTree);
 </script>
 
 <template>

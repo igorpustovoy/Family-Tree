@@ -40,7 +40,11 @@ const handleAddPerson = async () => {
       relativeId: props.id,
     });
 
-    tree.addChild(props.id, response.data.person);
+    if (props.type === "spouse") {
+      tree.addSpouse(props.id, response.data.person);
+    } else {
+      tree.addChild(props.id, response.data.person);
+    }
 
     emit("close-modal");
 

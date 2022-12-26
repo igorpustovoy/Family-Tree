@@ -15,4 +15,10 @@ router.post(
   addPersonController.handleAddDescendant
 );
 
+router.post(
+  "/add-spouse",
+  checkAuthenticated,
+  addPersonController.handleAddSpouse
+);
+
 export default router;

@@ -4,6 +4,7 @@ interface IAncestor {
   isRoot: boolean;
   treeOwner: string;
   children: string[];
+  spouseId?: string;
 }
 
 export default IAncestor;

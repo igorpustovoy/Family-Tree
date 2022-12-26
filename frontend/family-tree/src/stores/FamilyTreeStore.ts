@@ -17,12 +17,23 @@ const useFamilyTreeStore = defineStore("family-tree", {
       try {
         const response = await axios.get("/family-tree");
 
-        console.log("FAMILY TREE FROM API: ", response.data);
-
         this.familyTree = [...this.familyTree, ...response.data.people];
       } catch (error) {
         console.log(error);
       }
+    },
+
+    addPerson(person: IAncestor) {
+      this.familyTree = [...this.familyTree, person];
+    },
+
+    addSpouse(personId: string, spouse: IAncestor) {
+      const person = this.familyTree.find((person) => person.id === personId);
+
+      if (!person) return;
+
+      person.spouseId = spouse.id;
+      this.familyTree.push(spouse);
     },
 
     addChild(parentId: string, person: IAncestor) {
@@ -44,8 +55,6 @@ const useFamilyTreeStore = defineStore("family-tree", {
       const mapObjects = (objects: IAncestor[]): ITreeViewObject[] => {
         const childrenList: ITreeViewObject[] = [];
         for (const object of objects) {
-          console.log("OBJECT: ", object, "ALL OBJECTS: ", objects);
-
           if (object.children.length) {
             const children = object.children.map((child) => {
               return this.familyTree.find((person) => person.id === child);
@@ -53,22 +62,65 @@ const useFamilyTreeStore = defineStore("family-tree", {
 
             if (!children.length) return [];
 
-            childrenList.push({
-              firstPerson: {
-                name: object.name,
-                image: `https://fakeface.rest/face/view/${object.id}`,
-                id: object.id,
-              },
-              children: [...mapObjects(children as IAncestor[])],
-            });
+            if (object.spouseId) {
+              const spouse = this.familyTree.find(
+                (person) => person.id === object.spouseId
+              );
+
+              if (!spouse) console.error("Spouse not found");
+
+              childrenList.push({
+                firstPerson: {
+                  name: object.name,
+                  image: `https://fakeface.rest/face/view/${object.id}`,
+                  id: object.id,
+                },
+                secondPerson: {
+                  name: spouse.name,
+                  image: `https://fakeface.rest/face/view/${spouse.id}`,
+                  id: spouse.id,
+                },
+                children: [...mapObjects(children as IAncestor[])],
+              });
+            } else {
+              childrenList.push({
+                firstPerson: {
+                  name: object.name,
+                  image: `https://fakeface.rest/face/view/${object.id}`,
+                  id: object.id,
+                },
+                children: [...mapObjects(children as IAncestor[])],
+              });
+            }
           } else {
-            childrenList.push({
-              firstPerson: {
-                name: object.name,
-                image: `https://fakeface.rest/face/view/${object.id}`,
-                id: object.id,
-              },
-            });
+            if (object.spouseId) {
+              const spouse = this.familyTree.find(
+                (person) => person.id === object.spouseId
+              );
+
+              if (!spouse) console.error("Spouse not found");
+
+              childrenList.push({
+                firstPerson: {
+                  name: object.name,
+                  image: `https://fakeface.rest/face/view/${object.id}`,
+                  id: object.id,
+                },
+                secondPerson: {
+                  name: spouse.name,
+                  image: `https://fakeface.rest/face/view/${spouse.id}`,
+                  id: spouse.id,
+                },
+              });
+            } else {
+              childrenList.push({
+                firstPerson: {
+                  name: object.name,
+                  image: `https://fakeface.rest/face/view/${object.id}`,
+                  id: object.id,
+                },
+              });
+            }
           }
         }
 
@@ -80,8 +132,6 @@ const useFamilyTreeStore = defineStore("family-tree", {
       if (!root) return [];
 
       const mappedObjects = mapObjects([root]);
-
-      console.log("MAPPED OBJECTS: ", mappedObjects);
 
       return mappedObjects;
     },

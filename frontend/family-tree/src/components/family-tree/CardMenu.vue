@@ -19,6 +19,7 @@ const props = defineProps<{
             <v-icon>mdi-ring</v-icon>
             <div>Add Spouse</div>
           </div>
+          <AddPersonModal type="spouse" :id="props.id" />
         </v-list-item>
         <v-list-item class="list-item">
           <div class="list-item__info">
