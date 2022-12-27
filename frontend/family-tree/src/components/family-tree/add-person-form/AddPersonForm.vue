@@ -41,6 +41,7 @@ const handleAddPerson = async () => {
     });
 
     if (props.type === "spouse") {
+      console.log("SPOUSE: ", response.data.person);
       tree.addSpouse(props.id, response.data.person);
     } else {
       tree.addChild(props.id, response.data.person);

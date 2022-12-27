@@ -33,13 +33,23 @@ const useFamilyTreeStore = defineStore("family-tree", {
       if (!person) return;
 
       person.spouseId = spouse.id;
-      this.familyTree.push(spouse);
+      this.familyTree = [...this.familyTree, spouse];
     },
 
     addChild(parentId: string, person: IAncestor) {
       const parent = this.familyTree.find((person) => person.id === parentId);
 
       if (!parent) return;
+
+      if (parent.spouseId) {
+        const spouse = this.familyTree.find(
+          (person) => person.id === parent.spouseId
+        );
+
+        if (!spouse) return;
+
+        spouse.children.push(person.id);
+      }
 
       parent.children.push(person.id);
       this.familyTree.push(person);
@@ -67,7 +77,10 @@ const useFamilyTreeStore = defineStore("family-tree", {
                 (person) => person.id === object.spouseId
               );
 
-              if (!spouse) console.error("Spouse not found");
+              if (!spouse) {
+                console.error("Spouse not found");
+                return [];
+              }
 
               childrenList.push({
                 firstPerson: {
@@ -98,7 +111,10 @@ const useFamilyTreeStore = defineStore("family-tree", {
                 (person) => person.id === object.spouseId
               );
 
-              if (!spouse) console.error("Spouse not found");
+              if (!spouse) {
+                console.error("Spouse not found");
+                return [];
+              }
 
               childrenList.push({
                 firstPerson: {
