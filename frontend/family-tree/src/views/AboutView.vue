@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+console.log("ABOUT");
+</script>
 
 <template>XDDDDDDDDDDD</template>
 

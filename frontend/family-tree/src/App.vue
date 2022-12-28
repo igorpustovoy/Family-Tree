@@ -8,6 +8,7 @@ import ActiveConversations from "./components/user/active-conversations/ActiveCo
 import useAuthStore from "./stores/AuthStore";
 import useDrawerStore from "./stores/DrawerStore";
 import useFamilyTreeStore from "./stores/FamilyTreeStore";
+import TreeView from "./views/TreeView.vue";
 
 const auth = useAuthStore();
 const drawer = useDrawerStore();

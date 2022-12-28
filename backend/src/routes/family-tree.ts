@@ -5,7 +5,7 @@ import checkAuthenticated from "../middleware/checkAuthenticated";
 
 const router = Router();
 
-router.get("/", checkAuthenticated, familyTreeController.handleGetTree);
+router.get("/:user", checkAuthenticated, familyTreeController.handleGetTree);
 
 router.post("/", checkAuthenticated, familyTreeController.handleInitializeTree);
 

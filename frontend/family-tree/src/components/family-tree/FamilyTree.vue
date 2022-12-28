@@ -3,8 +3,12 @@ import VueFamilyTree from "@/components/family-tree/tree-view/VueFamilyTree.vue"
 import useFamilyTreeStore from "@/stores/FamilyTreeStore";
 import testTree from "@/assets/testTree";
 import CardMenu from "./CardMenu.vue";
+import type IAncestor from "@/models/IAncestor";
+import useViewTree from "@/composables/useViewTree";
 
-const treeStore = useFamilyTreeStore();
+defineProps<{
+  tree: IAncestor[];
+}>();
 
 const handleCardClick = (person: any) => {
   console.log(person);
@@ -12,10 +16,7 @@ const handleCardClick = (person: any) => {
 </script>
 
 <template>
-  <VueFamilyTree
-    :tree="treeStore.getViewableTreeStructure"
-    @card-click="handleCardClick"
-  >
+  <VueFamilyTree :tree="useViewTree(tree)" @card-click="handleCardClick">
     <template v-slot:card="{ item }">
       <div class="custom-card">
         <v-avatar size="60" :class="`elevation-4`">

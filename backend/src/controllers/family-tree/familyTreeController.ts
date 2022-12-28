@@ -5,7 +5,9 @@ import { v4 as uuidv4 } from "uuid";
 
 const familyTreeController = {
   handleGetTree: async (req: any, res: Response) => {
-    const treeOwner = req.user.username;
+    const treeOwner = req.params.user;
+
+    console.log("treeOwner: ", treeOwner);
 
     const session = driver.session();
 

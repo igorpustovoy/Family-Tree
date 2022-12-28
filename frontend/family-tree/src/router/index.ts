@@ -28,12 +28,13 @@ const router = createRouter({
       },
     },
     {
-      path: "/tree",
+      path: "/tree/:name",
       name: "tree",
       component: TreeView,
       meta: {
         requiresAuth: true,
       },
+      props: (route) => ({ treeOwner: route.params.name }),
     },
   ],
 });
@@ -48,9 +49,6 @@ router.beforeEach(async (to: RouteLocationNormalized) => {
   if (to.meta.requiresAuth && !auth.isAuthenticated)
     return {
       name: "",
-      // query: {
-      //   redirectTo: to.fullPath,
-      // },
     };
   return true;
 });

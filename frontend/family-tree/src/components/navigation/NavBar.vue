@@ -3,15 +3,19 @@ import UserModal from "@/components/user/UserModal.vue";
 import axios from "@/api/axios";
 import useAuthStore from "@/stores/AuthStore";
 import useDrawerStore from "@/stores/DrawerStore";
+import { useRouter } from "vue-router";
 
 const auth = useAuthStore();
 const drawer = useDrawerStore();
+const router = useRouter();
 
 const handleLogout = async () => {
   try {
     await axios.get("/users/logout");
 
     auth.clearAuth();
+
+    router.push("/");
   } catch (error) {
     console.error(error);
   }
@@ -32,7 +36,7 @@ const handleLogout = async () => {
     </div>
     <div class="navbar__links">
       <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/tree">Tree</RouterLink>
+      <RouterLink :to="`/tree/${auth.username}`">Tree</RouterLink>
       <RouterLink to="/about">About</RouterLink>
       <UserModal v-if="!auth.isAuthenticated" />
       <v-btn v-if="auth.isAuthenticated" color="red" @click="handleLogout()"

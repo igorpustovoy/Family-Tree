@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import useAuthStore from "@/stores/AuthStore";
 import useChat from "@/composables/useChat";
+import { useRouter } from "vue-router";
 
 defineProps<{
   username: string;
   email: string;
 }>();
+
+const router = useRouter();
 
 const auth = useAuthStore();
 </script>
@@ -35,6 +38,7 @@ const auth = useAuthStore();
         icon="mdi-message-text-outline"
       ></v-btn>
       <v-btn
+        @click="router.push(`/tree/${username}`)"
         size="40px"
         class="ma-2"
         color="none"

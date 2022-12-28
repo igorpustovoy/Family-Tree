@@ -108,7 +108,7 @@ export default {
         }
         &:first-child {
           &:before {
-            width: 82px;
+            width: 50%;
             border-left: 1px solid #ddd;
           }
           &:after {
@@ -117,7 +117,7 @@ export default {
         }
         &:last-child {
           &:before {
-            width: 82px;
+            width: 50%;
             border-right: 1px solid #ddd;
             left: 0;
             right: auto;
@@ -137,16 +137,16 @@ export default {
         }
         &_couple {
           &:after {
-            left: calc(50% - 68px);
+            left: calc(50% - 54px);
           }
           &:first-child {
             &:before {
-              width: calc(50% + 68px);
+              width: calc(50% + 54px);
             }
           }
           &:last-child {
             &:before {
-              width: calc(50% - 68px);
+              width: calc(50% - 54px);
             }
           }
           &:first-child:last-child {
