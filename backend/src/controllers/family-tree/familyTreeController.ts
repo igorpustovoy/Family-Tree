@@ -7,8 +7,6 @@ const familyTreeController = {
   handleGetTree: async (req: any, res: Response) => {
     const treeOwner = req.params.user;
 
-    console.log("treeOwner: ", treeOwner);
-
     const session = driver.session();
 
     try {

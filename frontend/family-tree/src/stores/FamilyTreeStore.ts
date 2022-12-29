@@ -20,7 +20,9 @@ const useFamilyTreeStore = defineStore("family-tree", {
 
         const response = await axios.get(`/family-tree/${auth.username}`);
 
-        this.familyTree = [...this.familyTree, ...response.data.people];
+        this.familyTree = [...response.data.people];
+
+        console.log("TREE FROM API: ", this.familyTree);
       } catch (error) {
         console.log(error);
       }

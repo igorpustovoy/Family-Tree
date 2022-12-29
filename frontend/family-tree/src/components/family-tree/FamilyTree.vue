@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import VueFamilyTree from "@/components/family-tree/tree-view/VueFamilyTree.vue";
-import useFamilyTreeStore from "@/stores/FamilyTreeStore";
-import testTree from "@/assets/testTree";
 import CardMenu from "./CardMenu.vue";
 import type IAncestor from "@/models/IAncestor";
 import useViewTree from "@/composables/useViewTree";

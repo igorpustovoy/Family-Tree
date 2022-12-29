@@ -15,7 +15,7 @@ const handleLogout = async () => {
 
     auth.clearAuth();
 
-    router.push("/");
+    window.location.reload();
   } catch (error) {
     console.error(error);
   }

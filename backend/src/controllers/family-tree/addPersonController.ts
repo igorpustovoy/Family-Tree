@@ -29,8 +29,6 @@ const addPersonController = {
       const person = result?.records[0].get("person").properties;
       const child = result?.records[0].get("child").properties;
 
-      console.log("PERSON: ", person);
-
       if (person.spouseId) {
         await session.executeWrite((tx) =>
           tx.run(

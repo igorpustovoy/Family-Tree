@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import AddPersonForm from "./add-person-form/AddPersonForm.vue";
+import CopyPersonForm from "./copy-person-form/CopyPersonForm.vue";
+
+type personAddType = "spouse" | "child";
 
 const props = defineProps<{
   id: string;
-  type: "spouse" | "child";
+  type?: personAddType;
+  operation: "add" | "copy";
 }>();
 
 const dialog = ref(false);
@@ -23,9 +27,16 @@ const closeModal = () => {
     <v-card>
       <v-card-text>
         <AddPersonForm
+          v-if="props.operation === 'add'"
           @close-modal="closeModal()"
-          :type="props.type"
+          :type="(props.type as personAddType)"
           :id="props.id"
+        />
+        <CopyPersonForm
+          v-if="props.operation === 'copy'"
+          @close-modal="closeModal()"
+          :id="props.id"
+          :clicked-person-id="props.id"
         />
       </v-card-text>
     </v-card>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type IAncestor from "@/models/IAncestor";
 import { computed, inject } from "vue";
-import AddPersonModal from "./AddPersonModal.vue";
+import AncestorModal from "./AncestorModal.vue";
 import type { Ref } from "vue";
 
 const props = defineProps<{
@@ -28,20 +28,21 @@ const relative = computed(() => {
             <v-icon>mdi-ring</v-icon>
             <div>Add Spouse</div>
           </div>
-          <AddPersonModal type="spouse" :id="props.id" />
+          <AncestorModal operation="add" type="spouse" :id="props.id" />
         </v-list-item>
         <v-list-item v-if="isOwner" class="list-item">
           <div class="list-item__info">
             <v-icon>mdi-account-multiple-plus</v-icon>
             <div>Add Child</div>
           </div>
-          <AddPersonModal type="child" :id="props.id" />
+          <AncestorModal operation="add" type="child" :id="props.id" />
         </v-list-item>
         <v-list-item v-if="!isOwner">
           <div class="list-item__info">
             <v-icon>mdi-content-copy</v-icon>
             <div>Copy to your tree</div>
           </div>
+          <AncestorModal operation="copy" type="child" :id="props.id" />
         </v-list-item>
       </v-list>
     </v-menu>
