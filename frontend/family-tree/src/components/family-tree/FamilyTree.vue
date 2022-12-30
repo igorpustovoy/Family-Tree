@@ -3,18 +3,25 @@ import VueFamilyTree from "@/components/family-tree/tree-view/VueFamilyTree.vue"
 import CardMenu from "./CardMenu.vue";
 import type IAncestor from "@/models/IAncestor";
 import useViewTree from "@/composables/useViewTree";
+import { ref, inject } from "vue";
+import type { Ref } from "vue";
 
 defineProps<{
   tree: IAncestor[];
 }>();
 
-const handleCardClick = (person: any) => {
-  console.log(person);
-};
+const showTree = ref(true);
+
+const treeOwner: Ref<string> = inject("treeOwner") as Ref<string>;
 </script>
 
 <template>
-  <VueFamilyTree :tree="useViewTree(tree)" @card-click="handleCardClick">
+  <VueFamilyTree
+    v-if="showTree"
+    :showTree="showTree"
+    :tree="useViewTree(tree)"
+    :treeOwner="treeOwner"
+  >
     <template v-slot:card="{ item }">
       <div class="custom-card">
         <v-avatar size="60" :class="`elevation-4`">

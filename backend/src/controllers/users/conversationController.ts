@@ -46,8 +46,6 @@ const conversationController = {
           messages: [],
         });
 
-        console.log("EMITTING TO ", recipient, " AND ", sender);
-
         io.emit(`private_message_${recipient}`, {
           message,
           author: sender,

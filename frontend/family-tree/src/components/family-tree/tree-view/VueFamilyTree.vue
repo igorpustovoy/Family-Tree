@@ -36,6 +36,9 @@
 
 <script>
 import VueFamilyTreeBranch from "./components/Branch.vue";
+import { watch, computed } from "vue";
+
+console.log("RENDERING TREE");
 
 export default {
   name: "VueFamilyTree",
@@ -48,6 +51,10 @@ export default {
       default() {
         return [];
       },
+    },
+    treeOwner: {
+      type: String,
+      default: "",
     },
     enableDrag: {
       type: Boolean,
@@ -86,8 +93,8 @@ export default {
       },
       preventMouseEvents: false,
       position: {
-        x: 0,
-        y: 0,
+        x: 200,
+        y: 200,
       },
     };
   },
@@ -172,15 +179,11 @@ export default {
     getWrapperClientRect() {
       return this.$refs.wrapper.getBoundingClientRect();
     },
-    centerTree() {
+    centerTree(wrapper, map) {
       return new Promise((resolve, reject) => {
         try {
-          const wrapperCenterX = this.getWrapperClientRect().width / 2;
-          const wrapperCenterY = this.getWrapperClientRect().height / 2;
-          const mapCenterX = this.getTreeClientRect().width / 2;
-          const mapCenterY = this.getTreeClientRect().height / 2;
-          this.position.x = wrapperCenterX - mapCenterX;
-          this.position.y = wrapperCenterY - mapCenterY;
+          this.position.x = wrapper - map;
+          this.position.y = 120;
           this.$emit("center-map");
           resolve(true);
         } catch (e) {
@@ -188,6 +191,25 @@ export default {
         }
       });
     },
+  },
+
+  mounted() {
+    this.centerTree(
+      this.getWrapperClientRect().width / 2,
+      this.getTreeClientRect().width / 2
+    );
+
+    watch(
+      () => this.treeOwner,
+      () => {
+        this.$nextTick(() => {
+          this.centerTree(
+            this.getWrapperClientRect().width / 2,
+            this.getTreeClientRect().width / 2
+          );
+        });
+      }
+    );
   },
 };
 </script>

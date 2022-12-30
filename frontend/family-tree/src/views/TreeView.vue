@@ -12,6 +12,8 @@ const treeStore = useFamilyTreeStore();
 const { familyTree } = storeToRefs(treeStore);
 const auth = useAuthStore();
 
+const hasFetchedTree = ref(false);
+
 const props = defineProps<{
   treeOwner: string;
 }>();
@@ -32,10 +34,9 @@ onMounted(async () => {
   watch(
     () => props.treeOwner,
     async (pathName) => {
+      hasFetchedTree.value = false;
       isOwner.value = auth.username === pathName;
       owner.value = pathName;
-
-      console.log("PROPS INSIDE WATCH", props.treeOwner);
 
       if (isOwner.value === true) {
         tree.value = familyTree.value;
@@ -43,11 +44,15 @@ onMounted(async () => {
         watchEffect(() => {
           tree.value = familyTree.value;
         });
+
+        hasFetchedTree.value = true;
       } else if (auth.username && pathName) {
         try {
           const response = await axios.get(`/family-tree/${pathName}`);
 
           tree.value = response.data.people;
+
+          hasFetchedTree.value = true;
         } catch (error) {
           console.error(error);
         }
@@ -56,7 +61,7 @@ onMounted(async () => {
   );
   if (isOwner.value === true) {
     tree.value = familyTree.value;
-
+    hasFetchedTree.value = true;
     watchEffect(() => {
       tree.value = familyTree.value;
     });
@@ -65,6 +70,8 @@ onMounted(async () => {
       const response = await axios.get(`/family-tree/${props.treeOwner}`);
 
       tree.value = response.data.people;
+
+      hasFetchedTree.value = true;
     } catch (error) {
       console.error(error);
     }
@@ -73,7 +80,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="family-tree">
+  <main v-if="hasFetchedTree" class="family-tree">
     <h2 v-if="!isOwner && !tree.length">
       User has not created a family tree yet.
     </h2>

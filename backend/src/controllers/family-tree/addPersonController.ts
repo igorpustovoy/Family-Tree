@@ -32,7 +32,7 @@ const addPersonController = {
 
       await session.executeWrite((tx) =>
         tx.run(
-          `MATCH (n:Person {id: $relativeId, treeOwner: $treeOwner})-[:CHILD]->(c:Person)
+          `MATCH (n:Person {id: $relativeId, treeOwner: $treeOwner})-[:CHILD]->(c:Person {id: $id, treeOwner: $treeOwner})
             MATCH (n)<-[:MARRIED]->(s:Person)
             CREATE (s)-[:CHILD]->(c)`,
           { relativeId, name, id, treeOwner }
@@ -96,7 +96,9 @@ const addPersonController = {
 
       const person = result.records[0].get("person").properties;
 
-      return res.status(200).json({ person: { ...person, children } });
+      return res
+        .status(200)
+        .json({ person: { ...person, spouseId: relativeId, children } });
     } catch (error) {
       console.log(getErrorMessage(error));
       res.status(500).json({ error: getErrorMessage(error) });

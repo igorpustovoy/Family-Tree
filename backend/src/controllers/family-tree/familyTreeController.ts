@@ -14,9 +14,9 @@ const familyTreeController = {
         tx.run(
           `MATCH (p:Person { treeOwner: $treeOwner })
           WITH p
-          OPTIONAL MATCH (p:Person)-[:CHILD]->(c:Person)
-          WITH p, collect(c.id) as children
-          OPTIONAL MATCH (p:Person)<-[:MARRIED]->(s:Person)
+          OPTIONAL MATCH (p)-[:CHILD]->(c:Person)
+          WITH p, collect(DISTINCT c.id) as children
+          OPTIONAL MATCH (p)<-[:MARRIED]->(s:Person)
           RETURN DISTINCT p as person, children as children, s.id as spouseId`,
           { treeOwner }
         )

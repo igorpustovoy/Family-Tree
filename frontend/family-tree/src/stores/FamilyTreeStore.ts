@@ -1,7 +1,6 @@
 import axios from "@/api/axios";
 import { defineStore } from "pinia";
 import type IAncestor from "@/models/IAncestor";
-import type ITreeViewObject from "@/models/ITreeViewObject";
 import useAuthStore from "./AuthStore";
 
 interface IFamilyTreeState {
