@@ -72,7 +72,7 @@ const handleCopyPerson = async () => {
     <h2>Choose person's parent from your tree:</h2>
     <v-autocomplete
       label="Select parent..."
-      :items="tree.getNameList"
+      :items="tree.getCorrectCopyPeople"
       :rules="formRules.name"
       v-model="formModel.name"
     ></v-autocomplete>

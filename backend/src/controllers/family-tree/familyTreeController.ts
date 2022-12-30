@@ -13,17 +13,31 @@ const familyTreeController = {
       const result = await session.executeRead((tx) =>
         tx.run(
           `MATCH (p:Person { treeOwner: $treeOwner })
-          OPTIONAL MATCH (p)-[:CHILD]->(c:Person)
-          RETURN p as person, collect(c.id) as children`,
+          WITH p
+          OPTIONAL MATCH (p:Person)-[:CHILD]->(c:Person)
+          WITH p, collect(c.id) as children
+          OPTIONAL MATCH (p:Person)<-[:MARRIED]->(s:Person)
+          RETURN DISTINCT p as person, children as children, s.id as spouseId`,
           { treeOwner }
         )
       );
 
+      console.log(result.records);
+
       const people = result.records.map((record) => {
-        return {
-          ...record.get("person").properties,
-          children: record.get("children").reverse(),
-        };
+        console.log(record.get("spouseId"));
+        if (record.get("spouseId") !== null) {
+          return {
+            ...record.get("person").properties,
+            spouseId: record.get("spouseId"),
+            children: record.get("children").reverse(),
+          };
+        } else {
+          return {
+            ...record.get("person").properties,
+            children: record.get("children").reverse(),
+          };
+        }
       });
 
       return res.status(200).json({ people });

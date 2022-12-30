@@ -21,28 +21,23 @@ const addPersonController = {
         tx.run(
           `MATCH (n:Person {id: $relativeId, treeOwner: $treeOwner})
             CREATE (n)-[:CHILD]->(m:Person {name: $name, id: $id, isRoot: false, treeOwner: $treeOwner})
-            RETURN n as person, m as child`,
+            RETURN m as child`,
           { relativeId, name, id, treeOwner }
         )
       );
 
-      const person = result?.records[0].get("person").properties;
-      const child = result?.records[0].get("child").properties;
+      console.log(JSON.stringify(result.records));
 
-      if (person.spouseId) {
-        await session.executeWrite((tx) =>
-          tx.run(
-            `MATCH (c:Person {id: $childId})<-[:CHILD]-(n:Person {id: $relativeId, treeOwner: $treeOwner})<-[:MARRIED]-(s:Person {id: $spouseId, treeOwner: $treeOwner})
-              CREATE (s)-[:CHILD]->(c)`,
-            {
-              relativeId,
-              childId: child.id,
-              spouseId: person.spouseId,
-              treeOwner,
-            }
-          )
-        );
-      }
+      const child = result.records[0].get("child").properties;
+
+      await session.executeWrite((tx) =>
+        tx.run(
+          `MATCH (n:Person {id: $relativeId, treeOwner: $treeOwner})-[:CHILD]->(c:Person)
+            MATCH (n)<-[:MARRIED]->(s:Person)
+            CREATE (s)-[:CHILD]->(c)`,
+          { relativeId, name, id, treeOwner }
+        )
+      );
 
       return res.status(200).json({ person: { ...child, children: [] } });
     } catch (error) {
@@ -66,13 +61,13 @@ const addPersonController = {
     try {
       const toBeMarried = await session.executeRead((tx) =>
         tx.run(
-          `MATCH (n:Person {id: $relativeId, treeOwner: $treeOwner})
-            RETURN n`,
+          `MATCH (n:Person {id: $relativeId, treeOwner: $treeOwner})<-[:MARRIED]->(s:Person)
+            RETURN s as spouse`,
           { relativeId, treeOwner }
         )
       );
 
-      if (toBeMarried.records[0].get(0).properties.spouseId) {
+      if (toBeMarried.records.length > 0) {
         return res.status(400).json({ error: "Person is already married" });
       }
 
@@ -83,8 +78,6 @@ const addPersonController = {
           `MATCH (n:Person {id: $relativeId, treeOwner: $treeOwner})
           CREATE (n)<-[:MARRIED]-(m:Person {name: $name, id: $id, isRoot: false, treeOwner: $treeOwner})
           CREATE (n)-[:MARRIED]->(m)
-          SET n.spouseId = $id
-          SET m.spouseId = $relativeId
           RETURN m as person`,
           { relativeId, name, id, treeOwner }
         )

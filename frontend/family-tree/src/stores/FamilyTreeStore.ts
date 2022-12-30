@@ -62,8 +62,16 @@ const useFamilyTreeStore = defineStore("family-tree", {
   },
 
   getters: {
-    getNameList(): string[] {
-      return this.familyTree.map((person) => person.name);
+    getCorrectCopyPeople(): string[] {
+      const names = this.familyTree
+        .filter(
+          (person) =>
+            this.familyTree.some((p) => p.children.includes(person.id)) ||
+            person.isRoot
+        )
+        .map((person) => person.name);
+
+      return names;
     },
   },
 });
