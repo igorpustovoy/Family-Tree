@@ -2,9 +2,16 @@ import { Router } from "express";
 import addPersonController from "../controllers/family-tree/addPersonController";
 import copyPeopleController from "../controllers/family-tree/copyPeopleController";
 import familyTreeController from "../controllers/family-tree/familyTreeController";
+import findAncestorsController from "../controllers/family-tree/findAncestorsController";
 import checkAuthenticated from "../middleware/checkAuthenticated";
 
 const router = Router();
+
+router.get(
+  "/find-ancestor",
+  checkAuthenticated,
+  findAncestorsController.handleFindAncestors
+);
 
 router.get("/:user", checkAuthenticated, familyTreeController.handleGetTree);
 

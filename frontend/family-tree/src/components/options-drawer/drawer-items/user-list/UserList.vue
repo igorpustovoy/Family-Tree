@@ -44,8 +44,4 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
-.user-list {
-  max-height: 350px;
-  overflow-y: auto;
-}
 </style>

@@ -6,6 +6,7 @@ import DrawerItem from "./DrawerItem.vue";
 import UserList from "./drawer-items/user-list/UserList.vue";
 import ConversationList from "./drawer-items/conversation-list/ConversationList.vue";
 import LogOutButton from "./drawer-items/LogOutButton.vue";
+import FindAncestor from "./drawer-items/find-ancestor/FindAncestor.vue";
 
 const drawer = useDrawerStore();
 </script>
@@ -16,6 +17,9 @@ const drawer = useDrawerStore();
     <v-divider></v-divider>
 
     <v-expansion-panels variant="accordion">
+      <DrawerItem title="Find Ancestors" icon="mdi-magnify">
+        <FindAncestor />
+      </DrawerItem>
       <DrawerItem title="Global Chat" icon="mdi-earth">
         <GlobalChat />
       </DrawerItem>
@@ -25,8 +29,6 @@ const drawer = useDrawerStore();
       <DrawerItem title="Conversations" icon="mdi-forum">
         <ConversationList />
       </DrawerItem>
-    </v-expansion-panels>
-    <div class="bottom-buttons">
       <v-divider></v-divider>
       <v-btn
         @click="drawer.isOpen = false"
@@ -36,21 +38,15 @@ const drawer = useDrawerStore();
         >Hide</v-btn
       >
       <LogOutButton />
-    </div>
+    </v-expansion-panels>
   </v-navigation-drawer>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
 
-.bottom-buttons {
+.hide-drawer-button {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  bottom: 0;
-  .hide-drawer-button {
-    height: 50px;
-  }
+  height: 50px;
 }
 </style>
