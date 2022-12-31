@@ -26,8 +26,6 @@ const addPersonController = {
         )
       );
 
-      console.log(JSON.stringify(result.records));
-
       const child = result.records[0].get("child").properties;
 
       await session.executeWrite((tx) =>

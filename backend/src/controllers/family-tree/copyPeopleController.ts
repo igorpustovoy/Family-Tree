@@ -4,13 +4,13 @@ import getErrorMessage from "../../helpers/getErrorMessage";
 
 const copyPeopleController = {
   handleCopyBranch: async (req: any, res: Response) => {
-    const { rootPersonId, newParent, sourceTreeOwner } = req.body;
+    const { rootPersonId, newParentId, sourceTreeOwner } = req.body;
 
     const targetTreeOwner = req.user.username;
 
-    if (!rootPersonId || !newParent || !sourceTreeOwner) {
+    if (!rootPersonId || !newParentId || !sourceTreeOwner) {
       return res.status(400).json({
-        error: "Missing rootPersonId, newParent, sourceTreeOwner",
+        error: "Missing rootPersonId, newParentId, sourceTreeOwner",
       });
     }
 
@@ -20,7 +20,7 @@ const copyPeopleController = {
       await session.executeWrite((tx) =>
         tx.run(
           `MATCH (root:Person {id: $rootPersonId, treeOwner: $sourceTreeOwner}),
-            (newParent:Person {name: $newParent, treeOwner: $targetTreeOwner})
+            (newParent:Person {id: $newParentId, treeOwner: $targetTreeOwner})
             MATCH path = (root)-[r*]-(node:Person)
             WITH root, newParent, COLLECT(path) AS paths
             CALL apoc.refactor.cloneSubgraphFromPaths(paths, {
@@ -29,35 +29,49 @@ const copyPeopleController = {
             }) YIELD input, output, error
             RETURN input, output, error
               `,
-          { rootPersonId, sourceTreeOwner, targetTreeOwner, newParent }
+          { rootPersonId, sourceTreeOwner, targetTreeOwner, newParentId }
         )
       );
 
       await session.executeWrite((tx) =>
         tx.run(
-          `MATCH (newParent:Person {name: $newParent, treeOwner: $targetTreeOwner})<-[:MARRIED]->(spouse:Person)
+          `MATCH (newParent:Person {id: $newParentId, treeOwner: $targetTreeOwner})<-[:MARRIED]->(spouse:Person)
             DETACH DELETE spouse`,
-          { rootPersonId, sourceTreeOwner, targetTreeOwner, newParent }
+          { rootPersonId, sourceTreeOwner, targetTreeOwner, newParentId }
         )
       );
 
       await session.executeWrite((tx) =>
         tx.run(
-          `MATCH (newParent:Person {name: $newParent, treeOwner: $targetTreeOwner})<-[:CHILD]-(parents:Person)
+          `MATCH (newParent:Person {id: $newParentId, treeOwner: $targetTreeOwner})<-[:CHILD]-(parents:Person)
            WHERE parents.treeOwner IS NULL
            DETACH DELETE parents`,
-          { rootPersonId, sourceTreeOwner, targetTreeOwner, newParent }
+          { rootPersonId, sourceTreeOwner, targetTreeOwner, newParentId }
         )
       );
 
-      const result = await session.executeWrite((tx) =>
+      // await session.executeWrite((tx) =>
+      //   tx.run(
+      //     `MATCH  (newParent:Person {id: $newParentId, treeOwner: $targetTreeOwner})-[r*]-(copy:Person)
+      //       WHERE copy.treeOwner IS NULL
+      //       SET copy.treeOwner = $targetTreeOwner
+      //       SET copy.isRoot = false
+      //       SET copy.id = apoc.create.uuid()`,
+      //     { rootPersonId, sourceTreeOwner, targetTreeOwner, newParentId }
+      //   )
+      // );
+
+      await session.executeWrite((tx) =>
         tx.run(
-          `MATCH  (newParent:Person {name: $newParent, treeOwner: $targetTreeOwner})-[r*]-(copy:Person)
-            WHERE copy.treeOwner IS NULL
-            SET copy.treeOwner = $targetTreeOwner
-            SET copy.id = apoc.create.uuid()
-            RETURN copy`,
-          { rootPersonId, sourceTreeOwner, targetTreeOwner, newParent }
+          `MATCH  (newParent:Person {id: $newParentId, treeOwner: $targetTreeOwner})
+          CALL apoc.path.subgraphNodes(newParent, {minLevel: 1, maxLevel: 5}) YIELD node
+          WITH node
+          MATCH (node)
+            WHERE node.treeOwner IS NULL
+            SET node.treeOwner = $targetTreeOwner
+            SET node.isRoot = false
+            SET node.id = apoc.create.uuid()`,
+          { rootPersonId, sourceTreeOwner, targetTreeOwner, newParentId }
         )
       );
 
@@ -66,20 +80,11 @@ const copyPeopleController = {
           `MATCH (copy:Person)
             WHERE copy.treeOwner IS NULL
             DETACH DELETE copy`,
-          { rootPersonId, sourceTreeOwner, targetTreeOwner, newParent }
+          { rootPersonId, sourceTreeOwner, targetTreeOwner }
         )
       );
 
-      console.log({
-        rootPersonId,
-        sourceTreeOwner,
-        targetTreeOwner,
-        newParent,
-      });
-
-      console.log(result);
-
-      return res.status(200).json({ result });
+      return res.status(200).send();
     } catch (error) {
       console.log(getErrorMessage(error));
       res.status(500).json({ error: getErrorMessage(error) });

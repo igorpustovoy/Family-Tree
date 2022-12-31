@@ -41,11 +41,11 @@ onMounted(async () => {
       if (isOwner.value === true) {
         tree.value = familyTree.value;
 
+        hasFetchedTree.value = treeStore.hasFetched;
         watchEffect(() => {
           tree.value = familyTree.value;
+          hasFetchedTree.value = treeStore.hasFetched;
         });
-
-        hasFetchedTree.value = true;
       } else if (auth.username && pathName) {
         try {
           const response = await axios.get(`/family-tree/${pathName}`);
@@ -61,9 +61,10 @@ onMounted(async () => {
   );
   if (isOwner.value === true) {
     tree.value = familyTree.value;
-    hasFetchedTree.value = true;
+    hasFetchedTree.value = treeStore.hasFetched;
     watchEffect(() => {
       tree.value = familyTree.value;
+      hasFetchedTree.value = treeStore.hasFetched;
     });
   } else if (auth.username && props.treeOwner) {
     try {
@@ -84,7 +85,10 @@ onMounted(async () => {
     <h2 v-if="!isOwner && !tree.length">
       User has not created a family tree yet.
     </h2>
-    <FirstPersonForm class="add-first-person" v-if="isOwner && !tree.length" />
+    <FirstPersonForm
+      class="add-first-person"
+      v-if="hasFetchedTree && isOwner && !tree.length"
+    />
     <FamilyTree :tree="tree" v-if="tree.length" />
   </main>
 </template>

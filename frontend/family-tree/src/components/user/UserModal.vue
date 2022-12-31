@@ -17,7 +17,9 @@ const swapTabs = () => {
   <div class="text-center">
     <v-dialog class="user-dialog" v-model="dialog">
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props"> Open Dialog </v-btn>
+        <v-btn class="user-dialog__button" v-bind="props">
+          Login / Register
+        </v-btn>
       </template>
 
       <v-card>
@@ -65,5 +67,9 @@ const swapTabs = () => {
     color: $theme-color;
     cursor: pointer;
   }
+}
+.user-dialog__button {
+  color: $theme-color;
+  border-radius: 0;
 }
 </style>

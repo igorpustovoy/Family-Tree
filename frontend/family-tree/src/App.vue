@@ -25,17 +25,13 @@ watchEffect(() => {
 </script>
 
 <template>
-  <v-app theme="dark">
+  <v-app class="v-app" theme="dark">
     <div v-if="auth.hasRequestedAuth">
       <NavBar />
       <ActiveConversations class="active-conversations" />
       <OptionsDrawer />
       <RouterView />
     </div>
-    <!-- <div class="loading-screen" v-else>
-    <div>Please wait...</div>
-    <v-progress-linear indeterminate color="teal"></v-progress-linear>
-  </div> -->
   </v-app>
 </template>
 
@@ -47,12 +43,7 @@ watchEffect(() => {
   display: flex;
   gap: 20px;
 }
-.loading-screen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
+.v-app {
+  height: 100%;
 }
 </style>

@@ -10,18 +10,11 @@ defineProps<{
   tree: IAncestor[];
 }>();
 
-const showTree = ref(true);
-
 const treeOwner: Ref<string> = inject("treeOwner") as Ref<string>;
 </script>
 
 <template>
-  <VueFamilyTree
-    v-if="showTree"
-    :showTree="showTree"
-    :tree="useViewTree(tree)"
-    :treeOwner="treeOwner"
-  >
+  <VueFamilyTree :tree="useViewTree(tree)" :treeOwner="treeOwner">
     <template v-slot:card="{ item }">
       <div class="custom-card">
         <v-avatar size="60" :class="`elevation-4`">

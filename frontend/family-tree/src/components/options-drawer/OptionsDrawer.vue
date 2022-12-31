@@ -5,6 +5,7 @@ import GlobalChat from "./drawer-items/GlobalChat.vue";
 import DrawerItem from "./DrawerItem.vue";
 import UserList from "./drawer-items/user-list/UserList.vue";
 import ConversationList from "./drawer-items/conversation-list/ConversationList.vue";
+import LogOutButton from "./drawer-items/LogOutButton.vue";
 
 const drawer = useDrawerStore();
 </script>
@@ -25,6 +26,7 @@ const drawer = useDrawerStore();
         <ConversationList />
       </DrawerItem>
     </v-expansion-panels>
+    <LogOutButton />
   </v-navigation-drawer>
 </template>
 

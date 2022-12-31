@@ -1,29 +1,59 @@
-<!-- eslint-disable prettier/prettier -->
-<script setup lang="ts">
-import axios from "@/api/axios";
-import useAuthStore from "@/stores/AuthStore";
-
-const testAuth = async () => {
-  const res = await axios.get("/users/test", {
-    withCredentials: true,
-    headers: { "Content-Type": "application/json" },
-  });
-
-  console.log(res);
-};
-
-const auth = useAuthStore();
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <main>
-    <h2 v-if="auth.isAuthenticated">
-      Welcome {{ auth.username }} {{ auth.email }}
-    </h2>
+    <v-timeline class="timeline" direction="vertical" side="end" align="start">
+      <v-timeline-item class="timeline-item" size="small" nodeColor="">
+        <div>
+          <div class="timeline-item__title text-h6">Create an Account</div>
+        </div>
+      </v-timeline-item>
+
+      <v-timeline-item class="timeline-item" size="small">
+        <div>
+          <div class="timeline-item__title text-h6">Interact</div>
+          <p class="timeline-item__text">
+            You can interact with other users by clicking the button in the left
+            top corner of your screen.
+          </p>
+        </div>
+      </v-timeline-item>
+
+      <v-timeline-item class="timeline-item" size="small">
+        <div>
+          <div class="timeline-item__title text-h6">Family tree</div>
+          <p class="timeline-item__text">
+            Create your own family tree. Click the link in the right top corner
+            of your screen. It will be created when you add your first family
+            member.
+          </p>
+        </div>
+      </v-timeline-item>
+
+      <v-timeline-item class="timeline-item" size="small">
+        <div>
+          <div class="timeline-item__title text-h6">Play around</div>
+          <p class="timeline-item__text">
+            Add more children and spouses to your family tree.
+          </p>
+        </div>
+      </v-timeline-item>
+
+      <v-timeline-item class="timeline-item" size="small">
+        <div>
+          <div class="timeline-item__title text-h6">Copy</div>
+          <p class="timeline-item__text">
+            You can copy parts of other users' family trees by visiting them
+            through social tab.
+          </p>
+        </div>
+      </v-timeline-item>
+    </v-timeline>
   </main>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "@/assets/_variables.scss";
 main {
   height: 100vh;
   display: flex;
@@ -32,5 +62,16 @@ main {
   max-width: 800px;
   margin: 0 auto;
   padding: 0;
+}
+.timeline {
+  padding: 0px 40px;
+  .timeline-item {
+    .timeline-item__title {
+      color: $theme-color;
+    }
+    .timeline-item__text {
+      max-width: 300px;
+    }
+  }
 }
 </style>

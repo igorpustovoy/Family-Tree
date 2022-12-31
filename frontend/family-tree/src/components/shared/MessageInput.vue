@@ -90,7 +90,7 @@ const isPrivate = computed(() => props.type === "private");
   padding-top: 0;
   .button {
     border-radius: 0;
-    background-color: transparent;
+    background-color: $theme-color;
   }
 }
 </style>

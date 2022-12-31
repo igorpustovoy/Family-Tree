@@ -22,10 +22,7 @@ const familyTreeController = {
         )
       );
 
-      console.log(result.records);
-
       const people = result.records.map((record) => {
-        console.log(record.get("spouseId"));
         if (record.get("spouseId") !== null) {
           return {
             ...record.get("person").properties,

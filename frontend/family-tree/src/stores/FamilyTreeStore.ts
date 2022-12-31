@@ -4,6 +4,7 @@ import type IAncestor from "@/models/IAncestor";
 import useAuthStore from "./AuthStore";
 
 interface IFamilyTreeState {
+  hasFetched: boolean;
   familyTree: IAncestor[];
 }
 
@@ -18,6 +19,8 @@ const useFamilyTreeStore = defineStore("family-tree", {
         const auth = useAuthStore();
 
         const response = await axios.get(`/family-tree/${auth.username}`);
+
+        this.hasFetched = true;
 
         this.familyTree = [...response.data.people];
 

@@ -1,5 +1,4 @@
 import useAuthStore from "@/stores/AuthStore";
-import AboutView from "@/views/AboutView.vue";
 import TreeView from "@/views/TreeView.vue";
 import {
   createRouter,
@@ -15,14 +14,6 @@ const router = createRouter({
       path: "/",
       name: "",
       component: HomeView,
-      meta: {
-        requiresAuth: false,
-      },
-    },
-    {
-      path: "/about",
-      name: "about",
-      component: AboutView,
       meta: {
         requiresAuth: false,
       },

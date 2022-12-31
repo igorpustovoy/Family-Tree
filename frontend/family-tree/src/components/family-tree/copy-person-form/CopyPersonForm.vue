@@ -44,13 +44,16 @@ const handleCopyPerson = async () => {
       sourceTreeOwner: treeOwner.value,
     });
 
-    const response = await axios.post("/family-tree/copy-branch", {
+    const newParentId = tree.familyTree.find(
+      (person) => person.name === formModel.name
+    )?.id;
+
+    await axios.post("/family-tree/copy-branch", {
       rootPersonId: props.clickedPersonId,
-      newParent: formModel.name,
+      newParentId: newParentId,
       sourceTreeOwner: treeOwner.value,
     });
 
-    console.log("RESPONSE: ", response.data);
     router.push(`/tree/${auth.username}`);
     tree.fetchFamilyTree();
     emit("close-modal");
