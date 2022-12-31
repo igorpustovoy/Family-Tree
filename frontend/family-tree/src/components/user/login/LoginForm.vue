@@ -4,6 +4,13 @@ import useAuthStore from "@/stores/AuthStore";
 import { ref } from "vue";
 import { loginFormModel, loginFormRules } from "./login-validation";
 import type IAuth from "@/models/IAuth";
+import type IRequestStatus from "@/models/IRequestStatus";
+import RequestStatus from "@/components/shared/RequestStatus.vue";
+
+const loginStatus = ref<IRequestStatus>({
+  status: "idle",
+  message: "",
+});
 
 const auth = useAuthStore();
 
@@ -17,12 +24,26 @@ const formRules = loginFormRules;
 
 const handleLogin = async () => {
   isSubmitting.value = true;
+  loginStatus.value = {
+    status: "pending",
+    message: "Logging in...",
+  };
   if (isFormValid.value) {
     try {
       const response = await axios.post<IAuth>("/users/login", formModel);
 
-      auth.setAuth(response.data.username, response.data.email);
+      loginStatus.value = {
+        status: "success",
+        message: "Logged in successfully!",
+      };
+      setTimeout(() => {
+        auth.setAuth(response.data.username, response.data.email);
+      }, 1000);
     } catch (error) {
+      loginStatus.value = {
+        status: "error",
+        message: "Incorrect email or password",
+      };
       console.error(error);
     }
   }
@@ -39,6 +60,7 @@ const handleLogin = async () => {
     v-model="isFormValid"
     :readonly="isSubmitting"
   >
+    <RequestStatus :requestStatus="loginStatus" />
     <v-text-field
       density="comfortable"
       v-model="formModel.email"
@@ -52,6 +74,7 @@ const handleLogin = async () => {
       v-model="formModel.password"
       label="Password"
       type="password"
+      :rules="formRules.password"
       required
     ></v-text-field>
 

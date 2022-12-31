@@ -47,7 +47,7 @@ const closeModal = () => {
 @import "@/assets/_variables.scss";
 
 .person-dialog {
-  max-width: 500px;
+  max-width: 450px;
 }
 
 .button {

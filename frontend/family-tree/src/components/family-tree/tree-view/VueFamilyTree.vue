@@ -36,9 +36,7 @@
 
 <script>
 import VueFamilyTreeBranch from "./components/Branch.vue";
-import { watch, computed } from "vue";
-
-console.log("RENDERING TREE");
+import { watch } from "vue";
 
 export default {
   name: "VueFamilyTree",
@@ -74,7 +72,7 @@ export default {
     },
     dragCursor: {
       type: String,
-      default: "grabbing",
+      default: "grab",
     },
     mouseChangeDiff: {
       type: Number,
@@ -89,7 +87,7 @@ export default {
         dragStartY: 0,
         diffX: 0,
         diffY: 0,
-        mouseCursor: "default",
+        mouseCursor: "grab",
       },
       preventMouseEvents: false,
       position: {
@@ -136,7 +134,7 @@ export default {
       if (this.enableDrag) {
         if (this.dragAndDrop.dragStarted) {
           this.dragAndDrop.diffX =
-            (event.pageX || event.touches[0].pageX) -
+            (event.pageX || (event.touches && event.touches[0].pageX)) -
             this.dragAndDrop.dragStartX;
           this.dragAndDrop.diffY =
             (event.pageY || event.touches[0].pageY) -
@@ -148,7 +146,7 @@ export default {
             this.dragAndDrop.diffX < -this.mouseChangeDiff
           ) {
             this.preventMouseEvents = true;
-            this.dragAndDrop.mouseCursor = this.dragCursor;
+            this.dragAndDrop.mouseCursor = "grabbing";
           }
           this.position.x += this.dragAndDrop.diffX;
           this.position.y += this.dragAndDrop.diffY;
@@ -161,7 +159,7 @@ export default {
     dragend() {
       if (this.enableDrag) {
         this.dragAndDrop.dragStarted = false;
-        this.dragAndDrop.mouseCursor = "default";
+        this.dragAndDrop.mouseCursor = "grab";
         if (this.mobilePreventScroll) {
           const selector = this.mobilePreventScroll.selector || "body";
           const $el = document.querySelector(selector);

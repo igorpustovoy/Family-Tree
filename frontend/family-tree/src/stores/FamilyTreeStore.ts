@@ -11,6 +11,7 @@ interface IFamilyTreeState {
 const useFamilyTreeStore = defineStore("family-tree", {
   state: (): IFamilyTreeState => ({
     familyTree: [],
+    hasFetched: false,
   }),
 
   actions: {
@@ -23,8 +24,6 @@ const useFamilyTreeStore = defineStore("family-tree", {
         this.hasFetched = true;
 
         this.familyTree = [...response.data.people];
-
-        console.log("TREE FROM API: ", this.familyTree);
       } catch (error) {
         console.log(error);
       }

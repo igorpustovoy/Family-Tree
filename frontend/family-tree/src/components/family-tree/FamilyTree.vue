@@ -3,8 +3,9 @@ import VueFamilyTree from "@/components/family-tree/tree-view/VueFamilyTree.vue"
 import CardMenu from "./CardMenu.vue";
 import type IAncestor from "@/models/IAncestor";
 import useViewTree from "@/composables/useViewTree";
-import { ref, inject } from "vue";
+import { inject } from "vue";
 import type { Ref } from "vue";
+import TreeOverlay from "./TreeOverlay.vue";
 
 defineProps<{
   tree: IAncestor[];
@@ -14,7 +15,11 @@ const treeOwner: Ref<string> = inject("treeOwner") as Ref<string>;
 </script>
 
 <template>
-  <VueFamilyTree :tree="useViewTree(tree)" :treeOwner="treeOwner">
+  <VueFamilyTree
+    class="vue-family-tree"
+    :tree="useViewTree(tree)"
+    :treeOwner="treeOwner"
+  >
     <template v-slot:card="{ item }">
       <div class="custom-card">
         <v-avatar size="60" :class="`elevation-4`">
@@ -27,6 +32,7 @@ const treeOwner: Ref<string> = inject("treeOwner") as Ref<string>;
       </div>
     </template>
   </VueFamilyTree>
+  <TreeOverlay />
 </template>
 
 <style lang="scss" scoped>
@@ -58,5 +64,9 @@ const treeOwner: Ref<string> = inject("treeOwner") as Ref<string>;
     height: 100%;
     width: 100%;
   }
+}
+
+.vue-family-tree {
+  z-index: 3;
 }
 </style>

@@ -26,10 +26,31 @@ const drawer = useDrawerStore();
         <ConversationList />
       </DrawerItem>
     </v-expansion-panels>
-    <LogOutButton />
+    <div class="bottom-buttons">
+      <v-divider></v-divider>
+      <v-btn
+        @click="drawer.isOpen = false"
+        prepend-icon="mdi-arrow-left"
+        class="hide-drawer-button"
+        color="none"
+        >Hide</v-btn
+      >
+      <LogOutButton />
+    </div>
   </v-navigation-drawer>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+
+.bottom-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  .hide-drawer-button {
+    height: 50px;
+  }
+}
 </style>

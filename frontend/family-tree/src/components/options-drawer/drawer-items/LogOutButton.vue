@@ -18,7 +18,11 @@ const handleLogout = async () => {
 </script>
 
 <template>
-  <v-btn @click="handleLogout()" class="logout-button" color="red"
+  <v-btn
+    prepend-icon="mdi-logout"
+    @click="handleLogout()"
+    class="logout-button"
+    color="red"
     >Logout</v-btn
   >
 </template>
@@ -27,8 +31,6 @@ const handleLogout = async () => {
 @import "@/assets/_variables.scss";
 
 .logout-button {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   border-radius: 0;
   height: 50px;

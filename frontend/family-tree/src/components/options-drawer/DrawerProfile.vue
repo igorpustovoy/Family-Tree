@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import useAuthStore from "@/stores/AuthStore";
-// import defaultAvatar from "@/assets/images/default_profile.jpg";
 
 const auth = useAuthStore();
 </script>

@@ -11,7 +11,6 @@ const drawer = useDrawerStore();
 
 const handleCloseChat = () => {
   drawer.closeActiveConversation([auth.username, props.otherUser]);
-  console.log(drawer.activeConversations);
 };
 </script>
 

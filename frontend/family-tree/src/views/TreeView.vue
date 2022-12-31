@@ -21,16 +21,12 @@ const props = defineProps<{
 const tree = ref<IAncestor[]>([]);
 const owner = ref(props.treeOwner);
 const isOwner = ref(auth.username === props.treeOwner);
-console.log("isOwner", isOwner.value);
-
-console.log("PROPS", props.treeOwner);
 
 provide("tree", tree);
 provide("isOwner", isOwner);
 provide("treeOwner", owner);
 
 onMounted(async () => {
-  console.log(props.treeOwner);
   watch(
     () => props.treeOwner,
     async (pathName) => {

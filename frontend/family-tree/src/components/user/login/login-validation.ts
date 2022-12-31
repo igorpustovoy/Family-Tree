@@ -8,6 +8,9 @@ export const loginFormModel = reactive({
 export const loginFormRules = {
   email: [
     (v: string) => !!v || "E-mail is required",
-    (v: string) => /.+@.+/.test(v) || "E-mail must be valid",
+    (v: string) =>
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+      "E-mail must be valid",
   ],
+  password: [(v: string) => !!v || "Password is required"],
 };

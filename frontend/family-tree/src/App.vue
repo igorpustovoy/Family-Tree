@@ -8,7 +8,6 @@ import ActiveConversations from "./components/user/active-conversations/ActiveCo
 import useAuthStore from "./stores/AuthStore";
 import useDrawerStore from "./stores/DrawerStore";
 import useFamilyTreeStore from "./stores/FamilyTreeStore";
-import TreeView from "./views/TreeView.vue";
 
 const auth = useAuthStore();
 const drawer = useDrawerStore();
@@ -39,11 +38,9 @@ watchEffect(() => {
 .active-conversations {
   position: fixed;
   bottom: 0;
-  left: 400px;
+  right: 20px;
   display: flex;
+  flex-direction: row-reverse;
   gap: 20px;
-}
-.v-app {
-  height: 100%;
 }
 </style>

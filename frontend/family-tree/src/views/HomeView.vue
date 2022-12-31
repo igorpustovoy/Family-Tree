@@ -64,7 +64,8 @@ main {
   padding: 0;
 }
 .timeline {
-  padding: 0px 40px;
+  margin-left: 70px;
+  padding-right: 40px;
   .timeline-item {
     .timeline-item__title {
       color: $theme-color;
@@ -72,6 +73,14 @@ main {
     .timeline-item__text {
       max-width: 300px;
     }
+  }
+
+  @media (max-width: 800px) {
+    margin-top: 100px;
+    margin-left: 10px;
+  }
+  @media (max-width: 400px) {
+    margin-top: 200px;
   }
 }
 </style>

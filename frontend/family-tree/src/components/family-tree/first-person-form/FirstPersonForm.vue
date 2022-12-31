@@ -20,8 +20,6 @@ const handleAddFirstPerson = async () => {
 
       const person = response.data.person;
 
-      console.log(person);
-
       tree.addPerson(person);
     } catch (error) {
       console.error(error);
@@ -39,14 +37,16 @@ const handleAddFirstPerson = async () => {
     v-model="isFormValid"
     :readonly="isSubmitting"
   >
-    <h2>Add a first person to your tree:</h2>
+    <h2 class="form-title">Add a first person to your tree:</h2>
     <v-text-field
       class="text-field"
       v-model="formModel.name"
       label="Enter person name..."
       required
     ></v-text-field>
-    <v-btn :disabled="isSubmitting" type="submit"> Add Person </v-btn>
+    <v-btn class="form-button" :disabled="isSubmitting" type="submit">
+      Add Person
+    </v-btn>
   </v-form>
 </template>
 
@@ -58,13 +58,19 @@ const handleAddFirstPerson = async () => {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 500px;
+  max-width: 500px;
   gap: 30px;
-  padding: 1rem;
-  border: 1px solid $theme-color;
-  border-radius: 5px;
+  padding: 20px 60px;
+  border: 4px solid $background-color-secondary;
   .text-field {
-    width: 300px;
+    width: 100%;
+  }
+  .form-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+  .form-button {
+    width: 100%;
   }
 }
 </style>

@@ -4,6 +4,13 @@ import { registerFormModel, registerFormRules } from "./register-validation";
 import axios from "@/api/axios";
 import type IAuth from "@/models/IAuth";
 import useAuthStore from "@/stores/AuthStore";
+import RequestStatus from "@/components/shared/RequestStatus.vue";
+import type IRequestStatus from "@/models/IRequestStatus";
+
+const registerStatus = ref<IRequestStatus>({
+  status: "idle",
+  message: "",
+});
 
 const auth = useAuthStore();
 
@@ -17,6 +24,10 @@ const formRules = registerFormRules;
 
 const handleRegister = async () => {
   isSubmitting.value = true;
+  registerStatus.value = {
+    status: "pending",
+    message: "Registering...",
+  };
   if (isFormValid.value) {
     try {
       const response = await axios.post<IAuth>("/users/register", formModel);
@@ -26,8 +37,19 @@ const handleRegister = async () => {
         password: formModel.password,
       });
 
-      auth.setAuth(user.data.username, user.data.email);
+      registerStatus.value = {
+        status: "success",
+        message: "Registered successfully!",
+      };
+
+      setTimeout(() => {
+        auth.setAuth(user.data.username, user.data.email);
+      }, 1000);
     } catch (error) {
+      registerStatus.value = {
+        status: "error",
+        message: "Something went wrong",
+      };
       console.error(error);
     }
   }
@@ -44,6 +66,7 @@ const handleRegister = async () => {
     v-model="isFormValid"
     :readonly="isSubmitting"
   >
+    <RequestStatus :requestStatus="registerStatus" />
     <v-text-field
       density="comfortable"
       v-model="formModel.username"

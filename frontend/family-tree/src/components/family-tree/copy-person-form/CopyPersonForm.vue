@@ -30,20 +30,12 @@ const isFormValid = ref(false);
 
 const treeOwner: Ref<string> = inject("treeOwner") as Ref<string>;
 
-console.log("TREE OWNER: ", treeOwner.value);
-
 const handleCopyPerson = async () => {
   if (!isFormValid.value) {
     return;
   }
   isSubmitting.value = true;
   try {
-    console.log({
-      rootPersonId: props.clickedPersonId,
-      newParent: formModel.name,
-      sourceTreeOwner: treeOwner.value,
-    });
-
     const newParentId = tree.familyTree.find(
       (person) => person.name === formModel.name
     )?.id;
@@ -72,7 +64,8 @@ const handleCopyPerson = async () => {
     v-model="isFormValid"
     :readonly="isSubmitting"
   >
-    <h2>Choose person's parent from your tree:</h2>
+    <h2>Choose this person's equivalent from your own tree:</h2>
+    <v-divider class="divider"></v-divider>
     <v-autocomplete
       label="Select parent..."
       :items="tree.getCorrectCopyPeople"
@@ -89,6 +82,9 @@ const handleCopyPerson = async () => {
 .copy-person-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 40px;
+  .divider {
+    margin-bottom: 15px;
+  }
 }
 </style>

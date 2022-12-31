@@ -44,7 +44,6 @@ const drawer = useDrawerStore();
       <UserModal v-if="!auth.isAuthenticated" />
     </div>
   </div>
-  <v-divider color="light" />
 </template>
 
 <style scoped lang="scss">
@@ -84,6 +83,14 @@ const drawer = useDrawerStore();
     }
     .navbar__divider {
       height: 100%;
+    }
+  }
+  @media (max-width: 400px) {
+    flex-direction: column;
+    padding-top: 30px;
+    gap: 10px;
+    .navbar__logo {
+      margin-left: 0px;
     }
   }
 }

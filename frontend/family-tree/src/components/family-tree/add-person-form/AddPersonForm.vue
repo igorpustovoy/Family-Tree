@@ -58,6 +58,9 @@ const handleAddPerson = async () => {
 </script>
 
 <template>
+  <h2 class="form-title" v-if="type === 'spouse'">Enter the spouse's name</h2>
+  <h2 class="form-title" v-else>Enter the child's name</h2>
+  <v-divider class="form-divider"></v-divider>
   <v-form
     v-on:submit.prevent="handleAddPerson()"
     class="add-person-form"
@@ -80,6 +83,14 @@ const handleAddPerson = async () => {
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+.form-title {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+.form-divider {
+  margin-bottom: 30px;
+}
 .add-person-form {
   display: flex;
   flex-direction: column;
