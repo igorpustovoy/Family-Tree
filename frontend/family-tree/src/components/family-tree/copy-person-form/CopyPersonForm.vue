@@ -9,6 +9,13 @@ import {
 import type { Ref } from "vue";
 import { useRouter } from "vue-router";
 import useAuthStore from "@/stores/AuthStore";
+import type IRequestStatus from "@/models/IRequestStatus";
+import RequestStatus from "@/components/shared/RequestStatus.vue";
+
+const requestStatus = ref<IRequestStatus>({
+  status: "idle",
+  message: "",
+});
 
 const props = defineProps<{
   clickedPersonId: string;
@@ -35,6 +42,10 @@ const handleCopyPerson = async () => {
     return;
   }
   isSubmitting.value = true;
+  requestStatus.value = {
+    status: "pending",
+    message: "Copying descendants...",
+  };
   try {
     const newParentId = tree.familyTree.find(
       (person) => person.name === formModel.name
@@ -46,11 +57,22 @@ const handleCopyPerson = async () => {
       sourceTreeOwner: treeOwner.value,
     });
 
-    router.push(`/tree/${auth.username}`);
-    tree.fetchFamilyTree();
-    emit("close-modal");
-    formModel.name = "";
+    requestStatus.value = {
+      status: "success",
+      message: "Copied descendants successfully!",
+    };
+
+    setTimeout(() => {
+      router.push(`/tree/${auth.username}`);
+      tree.fetchFamilyTree();
+      emit("close-modal");
+      formModel.name = "";
+    }, 1000);
   } catch (error) {
+    requestStatus.value = {
+      status: "error",
+      message: "Something went wrong",
+    };
     console.log(error);
   }
   isSubmitting.value = false;
@@ -66,6 +88,7 @@ const handleCopyPerson = async () => {
   >
     <h2>Choose this person's equivalent from your own tree:</h2>
     <v-divider class="divider"></v-divider>
+    <RequestStatus :requestStatus="requestStatus" />
     <v-autocomplete
       label="Select parent..."
       :items="tree.getCorrectCopyPeople"
@@ -82,9 +105,6 @@ const handleCopyPerson = async () => {
 .copy-person-form {
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  .divider {
-    margin-bottom: 15px;
-  }
+  gap: 30px;
 }
 </style>

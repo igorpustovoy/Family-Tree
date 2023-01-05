@@ -47,6 +47,6 @@ const drawer = useDrawerStore();
 
 .hide-drawer-button {
   width: 100%;
-  height: 50px;
+  height: 55px;
 }
 </style>

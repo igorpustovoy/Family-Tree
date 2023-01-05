@@ -1,12 +1,13 @@
 import { Response } from "express";
 import driver from "../../config/neo4jDriver";
 import getErrorMessage from "../../helpers/getErrorMessage";
+import IGetUserAuthInfoRequest from "../../models/IGetUserAuthInfo";
 
 const copyPeopleController = {
-  handleCopyBranch: async (req: any, res: Response) => {
+  handleCopyBranch: async (req: IGetUserAuthInfoRequest, res: Response) => {
     const { rootPersonId, newParentId, sourceTreeOwner } = req.body;
 
-    const targetTreeOwner = req.user.username;
+    const targetTreeOwner = req.user?.username;
 
     if (!rootPersonId || !newParentId || !sourceTreeOwner) {
       return res.status(400).json({
@@ -49,17 +50,6 @@ const copyPeopleController = {
           { rootPersonId, sourceTreeOwner, targetTreeOwner, newParentId }
         )
       );
-
-      // await session.executeWrite((tx) =>
-      //   tx.run(
-      //     `MATCH  (newParent:Person {id: $newParentId, treeOwner: $targetTreeOwner})-[r*]-(copy:Person)
-      //       WHERE copy.treeOwner IS NULL
-      //       SET copy.treeOwner = $targetTreeOwner
-      //       SET copy.isRoot = false
-      //       SET copy.id = apoc.create.uuid()`,
-      //     { rootPersonId, sourceTreeOwner, targetTreeOwner, newParentId }
-      //   )
-      // );
 
       await session.executeWrite((tx) =>
         tx.run(

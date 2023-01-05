@@ -20,7 +20,7 @@ defineProps<{
         <div class="ancestor-list__info">
           <v-avatar size="40" :class="`elevation-4`">
             <v-img
-              :src="`https://i.pravatar.cc/50?u=${ancestor.ancestor.id}`"
+              :src="`https://fakeface.rest/face/view/${ancestor.ancestor.id}?minimum_age=30`"
               alt="avatar"
             ></v-img>
           </v-avatar>

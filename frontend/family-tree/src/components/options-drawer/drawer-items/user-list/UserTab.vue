@@ -19,7 +19,7 @@ const auth = useAuthStore();
       <div class="user-tab__avatar">
         <v-avatar size="40" :class="`elevation-4`">
           <v-img
-            :src="`https://i.pravatar.cc/50?u=${username}`"
+            :src="`https://fakeface.rest/face/view/${username}?minimum_age=30`"
             alt="avatar"
           ></v-img>
         </v-avatar>

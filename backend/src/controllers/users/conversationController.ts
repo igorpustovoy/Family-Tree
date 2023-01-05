@@ -2,13 +2,14 @@ import { Response } from "express";
 import { io } from "../..";
 import getErrorMessage from "../../helpers/getErrorMessage";
 import Conversation from "../../models/Conversation";
+import IGetUserAuthInfoRequest from "../../models/IGetUserAuthInfo";
 import User from "../../models/User";
 
 const conversationController = {
-  getConversations: async (req: any, res: Response) => {
+  getConversations: async (req: IGetUserAuthInfoRequest, res: Response) => {
     try {
       const user = await User.findOne({
-        username: req.user.username,
+        username: req.user?.username,
       }).populate("conversations");
 
       if (!user) {
@@ -24,9 +25,9 @@ const conversationController = {
     }
   },
 
-  sendMessage: async (req: any, res: Response) => {
+  sendMessage: async (req: IGetUserAuthInfoRequest, res: Response) => {
     const { message, recipient } = req.body;
-    const sender = req.user.username;
+    const sender = req.user?.username as string;
 
     if (!message || !recipient) {
       return res.status(400).json({ error: "Missing message or recipient" });

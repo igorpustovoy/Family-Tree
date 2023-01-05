@@ -24,9 +24,9 @@ const chat = useChat;
   <div @click="chat(conversation.participants)" class="conversation-tab">
     <v-avatar size="40" :class="`elevation-4`">
       <v-img
-        :src="`https://i.pravatar.cc/50?u=${getOtherUser(
+        :src="`https://fakeface.rest/face/view/${getOtherUser(
           conversation.participants
-        )}`"
+        )}?minimum_age=30`"
         alt="avatar"
       ></v-img>
     </v-avatar>

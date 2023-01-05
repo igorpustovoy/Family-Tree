@@ -1,7 +1,7 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Response, Request } from "express";
 
 const logoutController = {
-  handleLogout: (req: any, res: Response, next: NextFunction) => {
+  handleLogout: (req: Request, res: Response, next: NextFunction) => {
     req.logout(function (err: Error) {
       if (err) {
         return next(err);

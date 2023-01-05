@@ -2,10 +2,11 @@ import { Response } from "express";
 import driver from "../../config/neo4jDriver";
 import getErrorMessage from "../../helpers/getErrorMessage";
 import { v4 as uuidv4 } from "uuid";
+import IGetUserAuthInfoRequest from "../../models/IGetUserAuthInfo";
 
 const addPersonController = {
-  handleAddDescendant: async (req: any, res: Response) => {
-    const treeOwner = req.user.username;
+  handleAddDescendant: async (req: IGetUserAuthInfoRequest, res: Response) => {
+    const treeOwner = req.user?.username;
     const { name, relativeId } = req.body;
 
     if (!name || !relativeId) {
@@ -46,8 +47,8 @@ const addPersonController = {
     }
   },
 
-  handleAddSpouse: async (req: any, res: Response) => {
-    const treeOwner = req.user.username;
+  handleAddSpouse: async (req: IGetUserAuthInfoRequest, res: Response) => {
+    const treeOwner = req.user?.username;
     const { name, relativeId } = req.body;
 
     if (!name || !relativeId) {

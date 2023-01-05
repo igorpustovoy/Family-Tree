@@ -9,6 +9,12 @@ const props = defineProps<{
   type: "global" | "private";
 }>();
 
+window.addEventListener("keydown", (event: KeyboardEvent) => {
+  if (event.key === "Enter") {
+    sendMessage();
+  }
+});
+
 const message = ref("");
 const isDisabled = ref(false);
 

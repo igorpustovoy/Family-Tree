@@ -11,16 +11,20 @@ const hasFetched = ref(false);
 
 const ancestorsFound = ref<IFoundAncestor[]>([]);
 
-const handleEnter = (event: KeyboardEvent) => {
+window.addEventListener("keydown", (event: KeyboardEvent) => {
   if (event.key === "Enter") {
     handleFindAncestors();
   }
-};
-
-window.addEventListener("keydown", handleEnter);
+});
 
 const handleFindAncestors = async () => {
-  if (phrase.value.length < 3) return;
+  if (phrase.value.length < 3 || loading.value) {
+    if (!phrase.value.length) {
+      ancestorsFound.value = [];
+      hasFetched.value = false;
+    }
+    return;
+  }
 
   loading.value = true;
   try {

@@ -2,6 +2,7 @@ import { io } from "./../../index";
 import { Response, Request } from "express";
 import GlobalChat from "../../models/GlobalChat";
 import getErrorMessage from "../../helpers/getErrorMessage";
+import IGetUserAuthInfoRequest from "../../models/IGetUserAuthInfo";
 
 const globalChatController = {
   getChat: async (req: Request, res: Response) => {
@@ -21,9 +22,9 @@ const globalChatController = {
     }
   },
 
-  addMessage: async (req: any, res: Response) => {
+  addMessage: async (req: IGetUserAuthInfoRequest, res: Response) => {
     const { message } = req.body;
-    const author = req.user.username;
+    const author = req.user?.username as string;
 
     try {
       io.emit(`global_message`, { message, author });

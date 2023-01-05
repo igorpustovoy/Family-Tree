@@ -1,10 +1,11 @@
-import { Response } from "express";
 import driver from "../../config/neo4jDriver";
 import getErrorMessage from "../../helpers/getErrorMessage";
 import { v4 as uuidv4 } from "uuid";
+import { Request, Response } from "express";
+import IGetUserAuthInfoRequest from "../../models/IGetUserAuthInfo";
 
 const familyTreeController = {
-  handleGetTree: async (req: any, res: Response) => {
+  handleGetTree: async (req: Request, res: Response) => {
     const treeOwner = req.params.user;
 
     const session = driver.session();
@@ -46,8 +47,8 @@ const familyTreeController = {
     }
   },
 
-  handleInitializeTree: async (req: any, res: Response) => {
-    const treeOwner = req.user.username;
+  handleInitializeTree: async (req: IGetUserAuthInfoRequest, res: Response) => {
+    const treeOwner = req.user?.username;
     const { name } = req.body;
 
     if (!name) {

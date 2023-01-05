@@ -1,10 +1,11 @@
 import { Response } from "express";
 import driver from "../../config/neo4jDriver";
 import getErrorMessage from "../../helpers/getErrorMessage";
+import IGetUserAuthInfoRequest from "../../models/IGetUserAuthInfo";
 
 const findAncestorsController = {
-  handleFindAncestors: async (req: any, res: Response) => {
-    const user = req.user.username;
+  handleFindAncestors: async (req: IGetUserAuthInfoRequest, res: Response) => {
+    const user = req.user?.username;
     const phrase = req.query.phrase;
 
     if (!phrase) {
@@ -23,8 +24,6 @@ const findAncestorsController = {
           { user, phrase }
         )
       );
-
-      console.log(result.records);
 
       const people = result.records.map((record) => {
         return {

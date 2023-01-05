@@ -111,8 +111,6 @@ const useDrawerStore = defineStore("drawer", {
               message.participants
             );
 
-            console.log(activeConversation?.messages, message.participants);
-
             if (!activeConversation) {
               this.addActiveConversation(conversation);
 

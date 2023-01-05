@@ -23,12 +23,12 @@ const useViewTree = (tree: IAncestor[]): ITreeViewObject[] => {
           childrenList.push({
             firstPerson: {
               name: object.name,
-              image: `https://fakeface.rest/face/view/${object.id}`,
+              image: `https://fakeface.rest/face/view/${object.id}?minimum_age=30`,
               id: object.id,
             },
             secondPerson: {
               name: spouse.name,
-              image: `https://fakeface.rest/face/view/${spouse.id}`,
+              image: `https://fakeface.rest/face/view/${spouse.id}?minimum_age=30`,
               id: spouse.id,
             },
             children: [...mapObjects(children as IAncestor[])],
@@ -37,7 +37,7 @@ const useViewTree = (tree: IAncestor[]): ITreeViewObject[] => {
           childrenList.push({
             firstPerson: {
               name: object.name,
-              image: `https://fakeface.rest/face/view/${object.id}`,
+              image: `https://fakeface.rest/face/view/${object.id}?minimum_age=30`,
               id: object.id,
             },
             children: [...mapObjects(children as IAncestor[])],
@@ -55,12 +55,12 @@ const useViewTree = (tree: IAncestor[]): ITreeViewObject[] => {
           childrenList.push({
             firstPerson: {
               name: object.name,
-              image: `https://fakeface.rest/face/view/${object.id}`,
+              image: `https://fakeface.rest/face/view/${object.id}?minimum_age=30`,
               id: object.id,
             },
             secondPerson: {
               name: spouse.name,
-              image: `https://fakeface.rest/face/view/${spouse.id}`,
+              image: `https://fakeface.rest/face/view/${spouse.id}?minimum_age=30`,
               id: spouse.id,
             },
           });
@@ -68,7 +68,7 @@ const useViewTree = (tree: IAncestor[]): ITreeViewObject[] => {
           childrenList.push({
             firstPerson: {
               name: object.name,
-              image: `https://fakeface.rest/face/view/${object.id}`,
+              image: `https://fakeface.rest/face/view/${object.id}?minimum_age=30`,
               id: object.id,
             },
           });
