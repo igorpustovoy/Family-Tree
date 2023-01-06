@@ -6,6 +6,7 @@
 - Vue 3
 - Composition API
 - Script setup
+- Pinia
 - Vuetify
 - SCSS
 
